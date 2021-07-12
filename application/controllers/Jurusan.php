@@ -5,59 +5,57 @@ class Jurusan extends CI_Controller {
   function __construct(){
     parent::__construct();
 
+    if ($this->session->userdata('role') != "Kesiswaan") {
+      $this->session->set_flashdata('message', '
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
+        </div>
+        ');
+      redirect(base_url()."login");
+    }
+
     $this->load->model('Kesiswaan_model');
-    $this->load->model('Jurusan_model');
+    $this->load->model('Kelas_model');
   }
 
   public function index(){
-    if ($this->session->userdata('role') != "Kesiswaan") {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
-
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-    $data = array('nipy' => $data_staff->nipy,
-      'nama_staff' => $data_staff->nama,
-      'jabatan' => $data_staff->jabatan,
-    );
-
-    $data['jurusan'] = $this->Jurusan_model->get_Jurusan()->result();
-
-    $data['halaman'] = "Jurusan";
-    $this->template->load('template/template_kesiswaan', 'jurusan/index', $data);
+    $data['halaman'] = "Kelas";
+    $data['jurusan'] = $this->db->get('jurusan')->result();
+    $this->template->load('template/admin', 'jurusan/index', $data);
   }
 
-  public function detail($kd_jurusan){
-    if ($this->session->userdata('role') != "Kesiswaan") {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
+  public function show($id) {
+    $jurusan = $this->db->get_where('jurusan', ['id_jurusan' => $id])->row();
+    header('Content-Type: application/json');
+    echo json_encode($jurusan);
+  }
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
+  public function store() {
+    $this->db->insert('jurusan', [
+      'nama_jurusan' => $this->input->post('nama_jurusan'),
+    ]);
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-    $data = array('nipy' => $data_staff->nipy,
-      'nama_staff' => $data_staff->nama,
-      'jabatan' => $data_staff->jabatan,
-    );
+    $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
+    redirect('/jurusan');
+  }
 
-    $data['jurusan'] = $this->Jurusan_model->get_Jurusan($kd_jurusan)->row();
+  public function update($id) {
+    $data = [
+      'nama_jurusan' => $this->input->post('nama_jurusan'),
+    ];
 
-    $data['halaman'] = "Jurusan";
-    $this->template->load('template/template_kesiswaan', 'jurusan/detail', $data);
+    $this->db->where('id_jurusan', $id);
+    $this->db->update('jurusan', $data);
+
+    $this->session->set_flashdata('success', 'Berhasil mengubah data.');
+    redirect('/jurusan');
+  }
+
+  public function delete($id) {
+    $this->db->where('id_jurusan', $id);
+    $this->db->delete('jurusan');
+
+    $this->session->set_flashdata('success', 'Berhasil menghapus data.');
+    redirect('/jurusan');
   }
 }

@@ -259,6 +259,8 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-folder"></i> <span>Master Data</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="<?= base_url('Siswa') ?>">Data Siswa</a></li>
+                  <li><a class="nav-link" href="<?= base_url('Kelas') ?>">Data Kelas</a></li>
+                  <li><a class="nav-link" href="<?= base_url('Jurusan') ?>">Data Jurusan</a></li>
                 </ul>
               </li>
             </ul>
