@@ -14,15 +14,13 @@ class Kelas_model extends CI_Model{
         return $this->db->get('tahun');
     }
 
-    function get_Kelas($cari = null){
-        $this->db->like('kelas.kd_kelas', $cari);
-        $this->db->or_like('kelas.kd_jurusan', $cari);
-        $this->db->or_like('kelas.nama_kelas', $cari);
-        $this->db->or_like('kelas.kd_tahun', $cari);
-        $this->db->join('jurusan','kelas.kd_jurusan=jurusan.kd_jurusan');
-        $this->db->join('tahun','kelas.kd_tahun=tahun.kd_tahun');
-        $this->db->order_by('kelas.kd_tahun', 'DESC');
-        $this->db->order_by('kelas.kd_jurusan', 'ASC');
-        return $this->db->get('kelas');
+    function get_Kelas(){
+        $this->db->join('jurusan', 'kelas.jurusan_id = jurusan.id_jurusan');
+        return $this->db->get('kelas')->result();
     }
+
+    function find($id) {
+        $this->db->join('jurusan', 'kelas.jurusan_id = jurusan.id_jurusan');
+        return $this->db->get_where('kelas', ['id_kelas' => $id])->row();
+    } 
 }

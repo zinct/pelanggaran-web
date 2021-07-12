@@ -5,11 +5,6 @@ class Kelas extends CI_Controller {
   function __construct(){
     parent::__construct();
 
-    $this->load->model('Kesiswaan_model');
-    $this->load->model('Kelas_model');
-  }
-
-  public function index(){
     if ($this->session->userdata('role') != "Kesiswaan") {
       $this->session->set_flashdata('message', '
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -19,19 +14,51 @@ class Kelas extends CI_Controller {
       redirect(base_url()."login");
     }
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
+    $this->load->model('Kelas_model');
+  }
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-    $data = array('nipy' => $data_staff->nipy,
-      'nama_staff' => $data_staff->nama,
-      'jabatan' => $data_staff->jabatan,
-    );
-
-    $data['tahun'] = $this->Kelas_model->get_Tahun()->result();
-
+  public function index(){
     $data['halaman'] = "Kelas";
-    $this->template->load('template/template_kesiswaan', 'kelas/index', $data);
+    $data['kelas'] = $this->Kelas_model->get_Kelas();
+    $data['jurusan'] = $this->db->get('jurusan')->result();
+    $this->template->load('template/admin', 'kelas/index', $data);
+  }
+
+  public function show($id) {
+    $kelas = $this->Kelas_model->find($id);
+    header('Content-Type: application/json');
+    echo json_encode($kelas);
+  }
+
+  public function store() {
+    $data = [
+      'nama_kelas' => $this->input->post('nama_kelas'),
+      'jurusan_id' => $this->input->post('jurusan_id'),
+    ];
+
+    $this->db->insert('kelas', $data);
+    $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
+    redirect('/kelas');
+  }
+
+  public function update($id) {
+    $data = [
+      'nama_kelas' => $this->input->post('nama_kelas'),
+      'jurusan_id' => $this->input->post('jurusan_id'),
+    ];
+
+    $this->db->where('id_kelas', $id);
+    $this->db->update('kelas', $data);
+
+    $this->session->set_flashdata('success', 'Berhasil mengubah data.');
+    redirect('/kelas');
+  }
+
+  public function delete($id) {
+    $this->db->where('id_kelas', $id);
+    $this->db->delete('kelas');
+
+    $this->session->set_flashdata('success', 'Berhasil menghapus data.');
+    redirect('/kelas');
   }
 }

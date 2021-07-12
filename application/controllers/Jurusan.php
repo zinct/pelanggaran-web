@@ -13,13 +13,10 @@ class Jurusan extends CI_Controller {
         ');
       redirect(base_url()."login");
     }
-
-    $this->load->model('Kesiswaan_model');
-    $this->load->model('Kelas_model');
   }
 
   public function index(){
-    $data['halaman'] = "Kelas";
+    $data['halaman'] = "Jurusan";
     $data['jurusan'] = $this->db->get('jurusan')->result();
     $this->template->load('template/admin', 'jurusan/index', $data);
   }
@@ -31,10 +28,11 @@ class Jurusan extends CI_Controller {
   }
 
   public function store() {
-    $this->db->insert('jurusan', [
+    $data = [
       'nama_jurusan' => $this->input->post('nama_jurusan'),
-    ]);
+    ];
 
+    $this->db->insert('jurusan', $data);
     $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
     redirect('/jurusan');
   }

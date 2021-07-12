@@ -1,90 +1,138 @@
-<?php
-function numberToRoman($num){ 
-
-	$n = intval($num);
-	$result = '';
-	$lookup = array(
-		'M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 
-		'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 
-		'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1
-	); 
-
-	foreach ($lookup as $roman => $value)  
-	{
-		$matches = intval($n / $value); 
-		$result .= str_repeat($roman, $matches); 
-		$n = $n % $value; 
-	} 
-
-	return $result;
-}
-
-?>
-<div class="card mb-3">
-	<div class="card-header">
-		<h2>
-			<?php echo $halaman ;?>
-		</h2>
+<section class="section">
+	<div class="section-header">
+		<h1>Data Kelas</h1>
+		<div class="section-header-breadcrumb">
+			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Modules</a></div>
+			<div class="breadcrumb-item">DataTables</div>
+		</div>
 	</div>
-	<div class="card-body" style="min-height: 450px;">
-		<div class="accordion" id="accordionExample">
-			<?php
-			foreach ($tahun as $tahun) {
-				?>
 
-				<div class="card">
-					<div class="card-header" id="<?php echo $tahun->kd_tahun ; ?>">
-						<h2 class="mb-0">
-							<button class="btn btn-primary collapsed" type="button" data-toggle="collapse" data-target="#collapse<?php echo $tahun->kd_tahun ; ?>" aria-expanded="false" aria-controls="collapse<?php echo $tahun->kd_tahun ; ?>">
-								<?php echo "Tahun Ajaran " . $tahun->kd_tahun ; ?>
-							</button>
-						</h2>
-					</div>
-
-					<div id="collapse<?php echo $tahun->kd_tahun ; ?>" class="collapse" aria-labelledby="<?php echo $tahun->kd_tahun ; ?>" data-parent="#accordionExample">
-						<div class="card-body">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-								<tr>
-									<th width="10%" style="text-align: center;">Aksi</th>
-									<th>Kelas</th>
-									<th width="40%" style="text-align: center;">Jurusan</th>
-								</tr>
-								<?php
-								$kelas = $this->Kelas_model->get_Kelas($tahun->kd_tahun)->result();
-								foreach ($kelas as $kelas) {
-
-									if(date("m") > 6){
-										$ttahun = 1;
-									}
-									else{
-										$ttahun = 0;
-									}
-									$tahun = date("Y") - $kelas->kd_tahun + $ttahun + 9;
-
-									
-									?>
-									<tr>
-										<td align="center">
-											<a href="<?php echo base_url()."siswa/index/".$kelas->kd_kelas ; ?>"><button class="btn btn-primary"><i class="fa fa-search"></i></button></a>
-										</td>
-										<td><?php echo numberToRoman($tahun) . " " .$kelas->nama_kelas ; ?></td>
-										<td><?php echo $kelas->nama_jurusan ; ?></td>
-									</tr>
-									<?php
-								}
-								?>
-							</table>
-						</div>
-					</div>
+	<div class="section-body">
+		<div class="card">
+			<div class="card-header iseng-sticky bg-white">
+				<h4>Data Kelas</h4>
+				<div class="card-header-action">
+					<a href="#" data-toggle="modal" data-target="#crud-modal" onclick="createData()" class="btn btn-primary">Tambah Data</a>
 				</div>
-
-				<?php
-			}
-			?>
-
-			<div class="card">
-				
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-striped dataTable" id="table-1">
+						<thead>
+							<tr>
+								<th class="text-center">
+									#
+								</th>
+								<th>Nama Kelas</th>
+								<th>Jurusan</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $i = 1; foreach($kelas as $row) : ?>
+								<tr>
+									<td class="text-center"><?= $i++ ?></td>
+									<td><?= $row->nama_kelas ?></td>
+									<td><?= $row->nama_jurusan ?></td>
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<ul class="dropdown-menu">
+												<li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-eye"></i> Detail</a></li>
+												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_kelas ?>)"><i class="fas fa-edit"></i> Edit</a></li>
+												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_kelas ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
+											</ul>
+										</div>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
+<!-- CRUD Modal -->
+<form action="<?= base_url('Kelas/store') ?>" method="POST" id="crud">
+	<div class="modal fade" id="crud-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="crud-title">Tambah Kelas</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="crud-body">
+					<div class="form-group">
+						<label>Nama</label>
+						<input type="text" name="nama_kelas" id="nama" class="form-control" placeholder="Ketik Nama" autocomplete="off" autofocus="on" required>
+					</div>
+					<div class="form-group">
+						<label>Nama</label>
+						<select type="text" class="form-control" name="jurusan_id" required>
+							<option value="">Pilih Jurusan</option>
+							<?php foreach($jurusan as $row) : ?>
+								<option value="<?= $row->id_jurusan ?>"><?= $row->nama_jurusan ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<form action="" method="POST" id="delete-form">
+	<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Yakin Ingin Dihapus?</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body text-danger">Data Yang Sudah Dihapus Tidak Bisa Dikembalikan Lagi!</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">Kembali</button>
+					<button class="btn btn-danger" type="submit">Hapus</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<script>
+	function createData() {
+		$('#crud-title').html('Tambah Kelas');
+		$('#crud').attr('action', `<?= base_url() ?>kelas/store`);
+		document.getElementById('crud').reset(); 
+	}
+	
+	function deleteData(id) {
+		$('#delete-form').attr('action', `<?= base_url() ?>kelas/delete/${id}`);
+	}
+
+	function updateData(id) {
+		$('#crud-title').html('Ubah Kelas');
+		$('#crud').attr('action', `<?= base_url() ?>kelas/update/${id}`);
+		$.ajax({
+			url: `<?= base_url() ?>kelas/show/${id}`,
+			complete: function() {
+				$('#crud-modal').modal('show')
+			},
+			success: function(data) {
+				$('[name="nama_kelas"]').val(data.nama_kelas);
+				$('[name="jurusan_id"]').val(data.jurusan_id);
+			}
+		});
+	}
+</script>
