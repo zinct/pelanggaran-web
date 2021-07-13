@@ -8,12 +8,9 @@ class Login extends CI_Controller {
 
 	public function index()
   {
-    if($this->session->userdata('login')) {
-      if($this->session->userdata('level') == 'Admin')
+    if($this->session->userdata('login'))
         redirect('dashboard');
-      else
-        redirect('pembayaran/detail');
-    }
+				
     $this->load->view('login/index');
   }
 
