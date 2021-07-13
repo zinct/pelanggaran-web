@@ -12,43 +12,11 @@ class Siswa extends CI_Controller {
     $this->load->model('Pelanggaran_data_model');
   }
 
-  public function index($search = null){
-    if (($this->session->userdata('role') != "Kesiswaan") AND ($this->session->userdata('role') != "siswa")) {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
+  public function index(){
+    $data['siswa'] = $this->Siswa_model->get_Siswa();
 
-    elseif (!is_null($this->session->userdata('nipy'))) {
-      $nipy = $this->session->userdata('nipy');
-      $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-      $data = array('nipy' => $data_staff->nipy,
-        'nama_staff' => $data_staff->nama,
-        'jabatan' => $data_staff->jabatan,
-      );
-
-
-      $data['siswa'] = $this->Siswa_model->get_Siswa()->result();
-      $data['halaman'] = "Siswa";
-      
-      $this->template->load('template/admin', 'siswa/index', $data);
-    }
-
-
-
-    elseif (!is_null($this->session->userdata('nis'))) {
-      $nis = $this->session->userdata('nis');
-      $data_siswa = $this->Siswa_model->get_Siswa($nis)->row();
-      $data['nis'] = $data_siswa->nis;
-
-      $data['siswa'] = $this->Siswa_model->get_Siswa($nis)->row();
-
-      $data['halaman'] = "Dashboard";
-      $this->template->load('template/template_siswa', 'siswa/siswa/index', $data);
-    }
+    $data['halaman'] = "Dashboard";
+    $this->template->load('template/admin', 'siswa/index', $data);
   }
 
   public function create() {

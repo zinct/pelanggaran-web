@@ -9,7 +9,7 @@ class Siswa_model extends CI_Model{
 
     function get_Siswa(){
         $this->db->join('kelas', 'siswa.kelas_id = kelas.id_kelas');
-        return $this->db->get('siswa');
+        return $this->db->get('siswa')->result();
     }
 
     function find($id) {

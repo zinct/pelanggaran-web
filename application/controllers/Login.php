@@ -4,13 +4,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Login extends CI_Controller {
 	function __construct(){
 		parent::__construct();
-		$this->load->model('Login_model');
-		$this->load->library('form_validation');
 	}
 
-	public function index(){
-		$this->load->view('login');
-	}
+	public function index()
+  {
+    if($this->session->userdata('login')) {
+      if($this->session->userdata('level') == 'Admin')
+        redirect('dashboard');
+      else
+        redirect('pembayaran/detail');
+    }
+    $this->load->view('login/index');
+  }
 
 	public function password(){
 		$this->load->view('password');
@@ -121,96 +126,65 @@ class Login extends CI_Controller {
 		}
 	}
 
-	public function login(){
-		$this->_rules();
-		if ($this->form_validation->run() == FALSE) {
-			$this->session->set_flashdata('message', '
-				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-				<i class="icon fa fa-warning"></i> Silahkan Isi NIP/NIM dan Katasandi
-				'.validation_errors().'
-				</button>
-				</div>
-				');
-			redirect(base_url()."login");
-		} else {
-			$pengguna = $this->input->post('pengguna',true);
-			$katasandi = $this->input->post('katasandi',true);
-			$login_siswa = $this->Login_model->get_login_siswa($pengguna,$katasandi);
-			$login_staff = $this->Login_model->get_login_staff($pengguna,$katasandi);
-			$login_dosen = $this->Login_model->get_login_siswa($pengguna,$katasandi);
-			if ($login_siswa) {
-				$row = $this->Login_model->get_login_siswa($pengguna,$katasandi);
-				if (isset($row->nis)) {
-					$data = array(
-						'nis' => $row->nis,
-						'role' => "siswa",
-					);
-				}
-				$this->session->set_userdata($data);
-				$this->session->set_flashdata('message', '
-					<div class="alert alert-success">
-					<h4><i class="icon fa fa-check-circle"></i> Sukses</h4>
-					Silahkan melanjutkan.
-					</div>
-					');
-				redirect(base_url()."siswa");
-			}
-			else if ($login_staff) {
-				$row = $this->Login_model->get_login_staff($pengguna,$katasandi);
-				if (isset($row->nipy)) {
-					$data = array(
-						'nipy' => $row->nipy,
-						'role' => $row->jabatan,
-					);
-				}
-				$this->session->set_userdata($data);
-				$this->session->set_flashdata('message', '
-					<div class="alert alert-success">
-					<h4><i class="icon fa fa-check-circle"></i> Sukses</h4>
-					Silahkan melanjutkan.
-					</div>
-					');
-				if ($row->jabatan == "Kesiswaan") {
-					redirect(base_url()."kesiswaan");
+	public function login() {
+		$session = $this->session->userdata('login');
+    if($session) {
+      redirect('dashboard');
+    }
+    
+    $username = $this->input->post('username');
+    $password = $this->input->post('password');
 
-				}
-				else{
-					redirect(base_url()."staff");
-				}
-			}
-			else if($login_walikelas){
-				$row = $this->Login_model->get_login_dosen($pengguna,$katasandi);
-				if (isset($row->nip)) {
-					$data = array(
-						'nipy' => $row->nipy,
-						'role' => $row->jabatan,
-					);
-				}
-				$this->session->set_userdata($data);
-				$this->session->set_flashdata('message', '
-					<div class="alert alert-success">
-					<h4><i class="icon fa fa-check-circle"></i> Sukses</h4>
-					Silahkan melanjutkan.
-					</div>
-					');
-				redirect(base_url()."walikelas");
-			}
+    // Pengecekan Staff
+    $user = $this->db->get_where('user', ['username' => $username]);
+    if($user->num_rows() > 0) {
 
-			else{
-				$this->session->set_flashdata('message', '
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<i class="icon fa fa-warning"></i> NIS/NIPY dan Katasandi Tidak Cocok.
-					</div>
-					');
-				redirect(base_url()."login");
-			}
-		}
+      $user = $user->row();
+
+      if(password_verify($password, $user->password)) {
+        $session = array(
+          'login'  => TRUE,
+          'id' => $user->id_user,            
+          'nama_user' => $user->nama_user,            
+          'level' => $user->level
+        );
+
+        $this->session->set_userdata($session);
+        redirect('dashboard');
+      }
+      
+    }
+
+    // Pengecekan Siswa
+    // $user = $this->db->get_where('siswa', ['nisn' => $username]);
+    
+    // if($user->num_rows() > 0) {
+
+    //   $user = $user->row();
+
+    //   if($user->nis == $password) {
+    //     $session = array(
+    //       'login'  => TRUE,
+    //       'nis' => $user->nis,            
+    //       'nama_user' => $user->nama_siswa,            
+    //       'level' => 'Siswa',
+    //     );
+        
+    //     $this->session->set_userdata($session);
+    //     redirect("pembayaran/detail");
+    //   }
+      
+    // }
+    
+    $this->session->set_flashdata('error', 'Username Atau Password Salah!');
+    redirect('login');
 	}
 
 	public function logout(){
 		$this->session->sess_destroy();
-		redirect(base_url()."login");
+		redirect('login');
 	}
+	
 	public function _rules(){
 		$this->form_validation->set_message('required', '{field} harus diisi.');
 		$this->form_validation->set_message('is_unique', '{field} telah digunakan.');

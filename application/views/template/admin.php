@@ -254,13 +254,21 @@
               <li>
                 <a class="nav-link" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
               </li>
-              <li class="menu-header">Data Management</li>
+              <li class="menu-header">Master Data</li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-folder"></i> <span>Master Data</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-graduation-cap"></i> <span>Siswa</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="<?= base_url('Siswa') ?>">Data Siswa</a></li>
                   <li><a class="nav-link" href="<?= base_url('Kelas') ?>">Data Kelas</a></li>
                   <li><a class="nav-link" href="<?= base_url('Jurusan') ?>">Data Jurusan</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-folder"></i> <span>Pelanggaran</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="<?= base_url('Pelanggaran') ?>">Pelanggaran</a></li>
+                  <li><a class="nav-link" href="<?= base_url('jenis_pelanggaran') ?>">Jenis Pelanggaran</a></li>
+                  <li><a class="nav-link" href="<?= base_url('kategori_pelanggaran') ?>">Kategori Pelanggaran</a></li>
                 </ul>
               </li>
             </ul>
