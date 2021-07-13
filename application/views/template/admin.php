@@ -160,7 +160,7 @@
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-        Copyright © SMK Bakti Nusantara 666 @<?php echo date("Y") ; ?>
+          Copyright © SMK Bakti Nusantara 666 @<?php echo date("Y") ; ?>
         </div>
         <div class="footer-right">
           2.3.0

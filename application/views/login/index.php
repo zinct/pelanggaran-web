@@ -68,7 +68,7 @@
               </div>
             </div>
             <div class="simple-footer">
-              Copyright &copy; Stisla 2018
+             Copyright © SMK Bakti Nusantara 666 <?php echo date("Y") ; ?>
             </div>
           </div>
         </div>
