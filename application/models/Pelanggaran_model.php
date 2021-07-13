@@ -7,13 +7,9 @@ class Pelanggaran_model extends CI_Model{
         parent::__construct();
     }
 
-    function get_Pelanggaran($cari = null){
-        $this->db->like('kd_pelanggaran', $cari);
-        $this->db->or_like('kategori_pelanggaran', $cari);
-        $this->db->or_like('jenis_pelanggaran', $cari);
-        $this->db->or_like('pelanggaran', $cari);
-        $this->db->or_like('poin', $cari);
-        $this->db->order_by('kd_pelanggaran', 'ASC');
-        return $this->db->get('pelanggaran');
+    function get_Pelanggaran(){
+        $this->db->join('jenis_pelanggaran', 'pelanggaran.jenis_pelanggaran_id = jenis_pelanggaran.id_jenis_pelanggaran');
+        $this->db->join('kategori_pelanggaran', 'pelanggaran.kategori_pelanggaran_id = kategori_pelanggaran.id_kategori_pelanggaran');
+        return $this->db->get('pelanggaran')->result();
     }
 }
