@@ -14,8 +14,17 @@ class Siswa extends CI_Controller {
   public function index(){
     $data['siswa'] = $this->Siswa_model->get_Siswa();
 
-    $data['halaman'] = "Dashboard";
+    $data['halaman'] = "Siswa";
     $this->template->load('template/admin', 'siswa/index', $data);
+  }
+
+  public function show($id) {
+    $data['siswa'] = $this->Siswa_model->find($id);
+    $data['kelas'] = $this->db->get('kelas')->result();
+    $data['kelamin'] = ['L', 'P'];
+
+    $data['halaman'] = "Siswa";
+    $this->template->load('template/admin', 'siswa/show', $data);
   }
 
   public function create() {
