@@ -37,7 +37,6 @@
 										<div class="btn-group">
 											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
-												<li><a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-eye"></i> Detail</a></li>
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_jurusan ?>)"><i class="fas fa-edit"></i> Edit</a></li>
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_jurusan ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
 											</ul>
