@@ -16,11 +16,13 @@ class Kelas_model extends CI_Model{
 
     function get_Kelas(){
         $this->db->join('jurusan', 'kelas.jurusan_id = jurusan.id_jurusan');
+        $this->db->join('tahun', 'kelas.tahun_id = tahun.id_tahun');
         return $this->db->get('kelas')->result();
     }
 
     function find($id) {
         $this->db->join('jurusan', 'kelas.jurusan_id = jurusan.id_jurusan');
+        $this->db->join('tahun', 'kelas.tahun_id = tahun.id_tahun');
         return $this->db->get_where('kelas', ['id_kelas' => $id])->row();
     } 
 }

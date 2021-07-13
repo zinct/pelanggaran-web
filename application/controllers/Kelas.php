@@ -4,6 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Kelas extends CI_Controller {
   function __construct(){
     parent::__construct();
+
+    if(!$this->session->userdata('login'))
+				redirect('login');
+        
     $this->load->model('Kelas_model');
   }
 
@@ -11,6 +15,7 @@ class Kelas extends CI_Controller {
     $data['halaman'] = "Kelas";
     $data['kelas'] = $this->Kelas_model->get_Kelas();
     $data['jurusan'] = $this->db->get('jurusan')->result();
+    $data['tahun'] = $this->db->get('tahun')->result();
     $this->template->load('template/admin', 'kelas/index', $data);
   }
 
@@ -24,6 +29,7 @@ class Kelas extends CI_Controller {
     $data = [
       'nama_kelas' => $this->input->post('nama_kelas'),
       'jurusan_id' => $this->input->post('jurusan_id'),
+      'tahun_id' => $this->input->post('tahun_id'),
     ];
 
     $this->db->insert('kelas', $data);
@@ -35,6 +41,7 @@ class Kelas extends CI_Controller {
     $data = [
       'nama_kelas' => $this->input->post('nama_kelas'),
       'jurusan_id' => $this->input->post('jurusan_id'),
+      'tahun_id' => $this->input->post('tahun_id'),
     ];
 
     $this->db->where('id_kelas', $id);

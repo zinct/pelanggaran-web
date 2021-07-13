@@ -120,7 +120,7 @@ class CI_URI {
 				{
 					case 'AUTO': // For BC purposes only
 					case 'REQUEST_URI':
-						$uri = $this->_parse_request_uri();
+						$uri = strtolower($this->_parse_request_uri());
 						break;
 					case 'QUERY_STRING':
 						$uri = $this->_parse_query_string();

@@ -5,6 +5,9 @@ class Pelanggaran extends CI_Controller {
   function __construct(){
     parent::__construct();
     $this->load->model('Pelanggaran_model');
+
+    if(!$this->session->userdata('login'))
+				redirect('login');
   }
 
   public function index(){

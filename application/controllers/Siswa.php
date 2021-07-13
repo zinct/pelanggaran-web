@@ -5,11 +5,10 @@ class Siswa extends CI_Controller {
   function __construct(){
     parent::__construct();
 
-    $this->load->model('Kesiswaan_model');
+    if(!$this->session->userdata('login'))
+				redirect('login');
+      
     $this->load->model('Siswa_model');
-    $this->load->model('Kelas_model');
-
-    $this->load->model('Pelanggaran_data_model');
   }
 
   public function index(){

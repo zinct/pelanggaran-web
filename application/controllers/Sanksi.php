@@ -5,6 +5,9 @@ class Sanksi extends CI_Controller {
   function __construct(){
     parent::__construct();
     $this->load->model('Sanksi_model');
+
+    if(!$this->session->userdata('login'))
+				redirect('login');
   }
 
   public function index(){
