@@ -264,11 +264,18 @@
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-folder"></i> <span>Pelanggaran</span></a>
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-exclamation-triangle"></i> <span>Pelanggaran</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="<?= base_url('Pelanggaran') ?>">Pelanggaran</a></li>
                   <li><a class="nav-link" href="<?= base_url('jenis_pelanggaran') ?>">Jenis Pelanggaran</a></li>
                   <li><a class="nav-link" href="<?= base_url('kategori_pelanggaran') ?>">Kategori Pelanggaran</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-archive"></i> <span>Sanksi</span></a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-link" href="<?= base_url('Sanksi') ?>">Sanksi</a></li>
+                  <li><a class="nav-link" href="<?= base_url('kategori_sanksi') ?>">Kategori Sanksi</a></li>
                 </ul>
               </li>
             </ul>

@@ -7,12 +7,8 @@ class Sanksi_model extends CI_Model{
         parent::__construct();
     }
 
-    function get_Sanksi($cari = null){
-        $this->db->like('kd_sanksi', $cari);
-        $this->db->or_like('kategori_sanksi', $cari);
-        $this->db->or_like('jenis_sanksi', $cari);
-        $this->db->or_like('total_poin', $cari);
-        $this->db->order_by('kd_sanksi', 'ASC');
-        return $this->db->get('sanksi');
+    function get_Sanksi(){
+        $this->db->join('kategori_sanksi', 'sanksi.kategori_sanksi_id = kategori_sanksi.id_kategori_sanksi');
+        return $this->db->get('sanksi')->result();
     }
 }
