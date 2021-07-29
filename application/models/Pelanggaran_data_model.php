@@ -7,7 +7,7 @@ class Pelanggaran_data_model extends CI_Model{
         parent::__construct();
     }
 
-    function get_Pelanggaran($id_tahun){
+    function get_Pelanggaran($id_tahun, $limit = false, $notif = false){
         $this->db->select(
             '   pelanggaran_data.id_pelanggaran_data, 
                 pelanggaran_data.id_pelanggaran, 
@@ -46,6 +46,13 @@ class Pelanggaran_data_model extends CI_Model{
         $this->db->join('kategori_sanksi', 'kategori_sanksi.id_kategori_sanksi = sanksi.kategori_sanksi_id');
         $this->db->where('tahun.id_tahun', $id_tahun);
         $this->db->order_by('pelanggaran_data.tgl', 'desc');
+
+        if($limit)
+            $this->db->limit($limit);
+
+        if($notif)
+            $this->db->where('pelanggaran_data.status', 'Jatuh Sanksi');
+
         return $this->db->get('pelanggaran_data')->result();
     }
 
