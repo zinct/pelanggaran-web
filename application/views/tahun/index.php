@@ -2,9 +2,9 @@
 	<div class="section-header">
 		<h1>Data Tahun</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item active">Data Tahun</div>
 		</div>
 	</div>
 
@@ -25,7 +25,8 @@
 									#
 								</th>
 								<th>Nama Tahun</th>
-								<th>Actions</th>
+								<th>Aktif</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -33,12 +34,13 @@
 								<tr>
 									<td class="text-center"><?= $i++ ?></td>
 									<td><?= $row->nama_tahun ?></td>
+									<td><?= ($row->is_aktif)?"<i class='fas fa-check text-success'></i>":"" ?></td>
 									<td>
 										<div class="btn-group">
-											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_tahun ?>)"><i class="fas fa-edit"></i> Edit</a></li>
-												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_tahun ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
+												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_tahun ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
 											</ul>
 										</div>
 									</td>
@@ -67,6 +69,13 @@
 					<div class="form-group">
 						<label>Nama</label>
 						<input type="text" name="nama_tahun" id="nama" class="form-control" placeholder="Ketik Nama" autocomplete="off" autofocus="on" required>
+					</div>
+					<div class="form-group">
+						<label>Aktif</label>
+						<select  name="is_aktif" id="is_aktif" class="form-control" required>
+								<option value="1">Aktif</option>
+								<option value="0">Tidak Aktif</option>
+						</select>
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -119,6 +128,7 @@
 			},
 			success: function(data) {
 				$('[name="nama_tahun"]').val(data.nama_tahun);
+				$('[name="is_aktif"]').val(data.is_aktif);
 			}
 		});
 	}

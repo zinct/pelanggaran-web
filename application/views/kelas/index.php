@@ -2,16 +2,17 @@
 	<div class="section-header">
 		<h1>Data Kelas</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item active">Data Kelas</div>
 		</div>
 	</div>
 
 	<div class="section-body">
 		<div class="card">
 			<div class="card-header iseng-sticky bg-white">
-				<h4>Data Kelas</h4>
+				<h4>Data Kelas<br>
+				Tahun Ajaran <?=$tahun->nama_tahun?></h4>
 				<div class="card-header-action">
 					<a href="#" data-toggle="modal" data-target="#crud-modal" onclick="createData()" class="btn btn-primary">Tambah Data</a>
 				</div>
@@ -26,23 +27,28 @@
 								</th>
 								<th>Nama Kelas</th>
 								<th>Jurusan</th>
-								<th>Tahun</th>
-								<th>Actions</th>
+								<th>Tingkat</th>
+								<th>Wali Kelas</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php $i = 1; foreach($kelas as $row) : ?>
+							<?php 
+							// print_r($this->db->last_query());  
+							$i = 1; foreach($kelas as $row) : ?>
 								<tr>
 									<td class="text-center"><?= $i++ ?></td>
 									<td><?= $row->nama_kelas ?></td>
 									<td><?= $row->nama_jurusan ?></td>
-									<td><?= $row->nama_tahun ?></td>
+									<td><?= $row->tingkat ?></td>
+									<td><?= $row->nama_ptk ?></td>
 									<td>
 										<div class="btn-group">
-											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_kelas ?>)"><i class="fas fa-edit"></i> Edit</a></li>
-												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_kelas ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
+												<li><a class="dropdown-item" href="<?= base_url('kelas/edit/' . $row->id_kelas) ?>"><i class="fas fa-users"></i> Peserta Kelas</a></li>
+												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_kelas ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
 											</ul>
 										</div>
 									</td>
@@ -69,12 +75,25 @@
 				</div>
 				<div class="modal-body" id="crud-body">
 					<div class="form-group">
-						<label>Nama</label>
+						<label>Nama Kelas</label>
 						<input type="text" name="nama_kelas" id="nama" class="form-control" placeholder="Ketik Nama" autocomplete="off" autofocus="on" required>
 					</div>
 					<div class="form-group">
+						<label>Tingkat</label>
+						<select type="text" class="form-control" name="tingkat" required>
+							<option value="">Pilih Tingkat</option>
+							<?php
+								for ($i=0; $i < sizeof($tingkat); $i++) { 
+							?>
+								<option value="<?= $tingkat[$i] ?>"><?= $tingkat[$i] ?></option>
+							<?php
+								}
+							?>
+						</select>
+					</div>
+					<div class="form-group">
 						<label>Jurusan</label>
-						<select type="text" class="form-control" name="jurusan_id" required>
+						<select type="text" class="form-control" name="id_jurusan" required>
 							<option value="">Pilih Jurusan</option>
 							<?php foreach($jurusan as $row) : ?>
 								<option value="<?= $row->id_jurusan ?>"><?= $row->nama_jurusan ?></option>
@@ -83,10 +102,19 @@
 					</div>
 					<div class="form-group">
 						<label>Tahun</label>
-						<select type="text" class="form-control" name="tahun_id" required>
-							<option value="">Pilih Jurusan</option>
-							<?php foreach($tahun as $row) : ?>
+						<select type="text" class="form-control" name="id_tahun" required>
+							<option value="">Pilih Tahun Ajaran</option>
+							<?php foreach($tahuns as $row) : ?>
 								<option value="<?= $row->id_tahun ?>"><?= $row->nama_tahun ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div class="form-group" id="form-wali-kelas">
+						<label>Wali Kelas</label>
+						<select type="text" class="form-control" name="id_ptk">
+							<option value="">Pilih PTK</option>
+							<?php foreach($ptk as $row) : ?>
+								<option value="<?= $row->id_ptk ?>"><?= $row->nama_ptk ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
@@ -123,6 +151,7 @@
 <script>
 	function createData() {
 		$('#crud-title').html('Tambah Kelas');
+		$('#form-wali-kelas').hide();
 		$('#crud').attr('action', `<?= base_url() ?>kelas/store`);
 		document.getElementById('crud').reset(); 
 	}
@@ -130,9 +159,10 @@
 	function deleteData(id) {
 		$('#delete-form').attr('action', `<?= base_url() ?>kelas/delete/${id}`);
 	}
-
+	
 	function updateData(id) {
 		$('#crud-title').html('Ubah Kelas');
+		$('#form-wali-kelas').show();
 		$('#crud').attr('action', `<?= base_url() ?>kelas/update/${id}`);
 		$.ajax({
 			url: `<?= base_url() ?>kelas/show/${id}`,
@@ -141,8 +171,10 @@
 			},
 			success: function(data) {
 				$('[name="nama_kelas"]').val(data.nama_kelas);
-				$('[name="jurusan_id"]').val(data.jurusan_id);
-				$('[name="tahun_id"]').val(data.tahun_id);
+				$('[name="id_jurusan"]').val(data.id_jurusan);
+				$('[name="tingkat"]').val(data.tingkat);
+				$('[name="id_tahun"]').val(data.id_tahun);
+				$('[name="id_ptk"]').val(data.id_ptk);
 			}
 		});
 	}

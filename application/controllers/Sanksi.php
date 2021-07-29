@@ -23,6 +23,21 @@ class Sanksi extends CI_Controller {
     echo json_encode($sanksi);
   }
 
+  public function search($poin)
+  {
+    if ($poin>100) {
+      $poin=100;  
+    }
+
+    $sanksi = $this->db->join('kategori_sanksi', 'kategori_sanksi.id_kategori_sanksi=sanksi.kategori_sanksi_id')
+      ->get_where(
+      'sanksi',
+      ['min_poin <='=>$poin,'max_poin >='=>$poin,])
+      ->row();
+    header('Content-Type: application/json');
+    echo json_encode($sanksi);
+  }
+
   public function store() {
     $data = [
       'nama_sanksi' => $this->input->post('nama_sanksi'),

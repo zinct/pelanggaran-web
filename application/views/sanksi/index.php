@@ -1,17 +1,17 @@
 <section class="section">
 	<div class="section-header">
-		<h1>Data Sanksi</h1>
+		<h1>Referensi Sanksi</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Referensi</a></div>
+			<div class="breadcrumb-item active">Poin Sanksi</div>
 		</div>
 	</div>
 
 	<div class="section-body">
 		<div class="card">
 			<div class="card-header iseng-sticky bg-white">
-				<h4>Data Sanksi</h4>
+				<h4>Referensi Sanksi</h4>
 				<div class="card-header-action">
 					<a href="#" data-toggle="modal" data-target="#crud-modal" onclick="createData()" class="btn btn-primary">Tambah Data</a>
 				</div>
@@ -39,7 +39,7 @@
 									<td><?= $row->min_poin . ' - ' . $row->max_poin ?></td>
 									<td>
 										<div class="btn-group">
-											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_sanksi ?>)"><i class="fas fa-edit"></i> Edit</a></li>
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_sanksi ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>

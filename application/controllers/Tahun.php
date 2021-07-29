@@ -10,6 +10,10 @@ class Tahun extends CI_Controller {
   }
 
   public function index(){
+    if($this->session->userdata('level')!='admin'){
+      redirect('login');
+    }
+  
     $data['halaman'] = "Tahun";
     $data['tahun'] = $this->db->get('tahun')->result();
     $this->template->load('template/admin', 'tahun/index', $data);
@@ -24,17 +28,27 @@ class Tahun extends CI_Controller {
   public function store() {
     $data = [
       'nama_tahun' => $this->input->post('nama_tahun'),
+      'is_aktif' => $this->input->post('is_aktif'),
     ];
-
+    
+    if ($this->input->post('is_aktif')==1) {
+      $this->db->update('tahun', ['is_aktif' => 0]);
+    }
+    
     $this->db->insert('tahun', $data);
     $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
     redirect('/tahun');
   }
-
+  
   public function update($id) {
     $data = [
       'nama_tahun' => $this->input->post('nama_tahun'),
+      'is_aktif' => $this->input->post('is_aktif'),
     ];
+
+    if ($this->input->post('is_aktif')==1) {
+      $this->db->update('tahun', ['is_aktif' => 0]);
+    }
 
     $this->db->where('id_tahun', $id);
     $this->db->update('tahun', $data);

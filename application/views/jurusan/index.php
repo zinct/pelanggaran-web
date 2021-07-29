@@ -2,9 +2,9 @@
 	<div class="section-header">
 		<h1>Data Jurusan</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item active">Data Jurusan</div>
 		</div>
 	</div>
 
@@ -25,7 +25,7 @@
 									#
 								</th>
 								<th>Nama Jurusan</th>
-								<th>Actions</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -35,7 +35,7 @@
 									<td><?= $row->nama_jurusan ?></td>
 									<td>
 										<div class="btn-group">
-											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_jurusan ?>)"><i class="fas fa-edit"></i> Edit</a></li>
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_jurusan ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>

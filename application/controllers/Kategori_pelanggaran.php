@@ -21,6 +21,13 @@ class Kategori_pelanggaran extends CI_Controller {
     echo json_encode($kategori_pelanggaran);
   }
 
+  public function all()
+  {
+    $kategori_pelanggaran = $this->db->get('kategori_pelanggaran')->result();
+    header('Content-Type: application/json');
+    echo json_encode($kategori_pelanggaran);
+  }
+
   public function store() {
     $data = [
       'nama_kategori_pelanggaran' => $this->input->post('nama_kategori_pelanggaran'),

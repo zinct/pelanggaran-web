@@ -11,7 +11,8 @@ class Jenis_pelanggaran extends CI_Controller {
 
   public function index(){
     $data['halaman'] = "Jenis Pelanggaran";
-    $data['jenis_pelanggaran'] = $this->db->get('jenis_pelanggaran')->result();
+    $data['kategori_pelanggaran'] = $this->db->get('kategori_pelanggaran')->result();
+    $data['jenis_pelanggaran'] = $this->db->join('kategori_pelanggaran','kategori_pelanggaran.id_kategori_pelanggaran=jenis_pelanggaran.id_kategori_pelanggaran')->get('jenis_pelanggaran')->result();
     $this->template->load('template/admin', 'jenis_pelanggaran/index', $data);
   }
 
@@ -21,19 +22,35 @@ class Jenis_pelanggaran extends CI_Controller {
     echo json_encode($jenis_pelanggaran);
   }
 
+  public function all()
+  {
+    $jenis_pelanggaran = $this->db->get('jenis_pelanggaran')->result();
+    header('Content-Type: application/json');
+    echo json_encode($jenis_pelanggaran);
+  }
+
+  public function search($id_kategori_pelanggaran)
+  {
+    $jenis_pelanggaran = $this->db->get_where('jenis_pelanggaran',['id_kategori_pelanggaran'=>$id_kategori_pelanggaran])->result();
+    header('Content-Type: application/json');
+    echo json_encode($jenis_pelanggaran);
+  }
+
   public function store() {
     $data = [
       'nama_jenis_pelanggaran' => $this->input->post('nama_jenis_pelanggaran'),
+      'id_kategori_pelanggaran' => $this->input->post('kategori_pelanggaran_id'),
     ];
-
+    
     $this->db->insert('jenis_pelanggaran', $data);
     $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
     redirect('/jenis_pelanggaran');
   }
-
+  
   public function update($id) {
     $data = [
       'nama_jenis_pelanggaran' => $this->input->post('nama_jenis_pelanggaran'),
+      'id_kategori_pelanggaran' => $this->input->post('kategori_pelanggaran_id'),
     ];
 
     $this->db->where('id_jenis_pelanggaran', $id);

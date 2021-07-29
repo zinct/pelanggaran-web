@@ -1,10 +1,11 @@
 <section class="section">
-	<div class="section-header">
+  <div class="section-header">
 		<h1>Data Siswa</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item"><a href="../../Siswa">Data Siswa</a></div>
+			<div class="breadcrumb-item active">Edit</div>
 		</div>
 	</div>
 
@@ -29,27 +30,12 @@
                     </div>
                   </div>
                   <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kelas</label>
-                    <div class="col-sm-12 col-md-7">
-                      <select type="text" class="form-control" name="kelas_id" required>
-                        <option value="">Pilih Kelas</option>
-                        <?php foreach($kelas as $row) : ?>
-                          <?php if ($row->id_kelas == $siswa->kelas_id) : ?>
-                            <option value="<?= $row->id_kelas ?>" selected><?= $row->nama_kelas ?></option>
-                          <?php else : ?>
-                            <option value="<?= $row->id_kelas ?>"><?= $row->nama_kelas ?></option>
-                          <?php endif; ?>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis Kelamin</label>
                     <div class="col-sm-12 col-md-7">
-                      <select type="text" class="form-control" name="kelamin" required>
+                      <select type="text" class="form-control" name="jenis_kelamin" required>
                         <option value="">Pilih Kelamin</option>
-                        <?php foreach($kelamin as $row) : ?>
-                          <?php if ($row == $siswa->kelamin) : ?>
+                        <?php foreach($jenis_kelamin as $row) : ?>
+                          <?php if ($row == $siswa->jenis_kelamin) : ?>
                             <option value="<?= $row ?>" selected><?= $row ?></option>
                           <?php else : ?>
                             <option value="<?= $row ?>"><?= $row ?></option>
@@ -75,12 +61,6 @@
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal Lahir</label>
                     <div class="col-sm-12 col-md-7">
                       <input type="date" class="form-control" name="tanggal_lahir" value="<?= $siswa->tanggal_lahir ?>" required>
-                    </div>
-                  </div>
-                  <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Password</label>
-                    <div class="col-sm-12 col-md-7">
-                      <input type="password" class="form-control" name="kata_sandi" placeholder="*****************">
                     </div>
                   </div>
                   <div class="form-group row mb-4">

@@ -1,32 +1,56 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class User extends CI_Controller {
-  function __construct(){
+class User extends CI_Controller
+{
+  function __construct()
+  {
     parent::__construct();
 
-    if(!$this->session->userdata('login'))
-				redirect('login');
+    if (!$this->session->userdata('login'))
+      redirect('login');
   }
 
-  public function index(){
-    $data['halaman'] = "User";
-    $data['user'] = $this->db->get('user')->result();
+  public function index()
+  {
+    if($this->session->userdata('level')!='admin'){
+      redirect('login');
+    }
+  
+    $data['halaman'] = "Pengguna";
+    // $data['user'] = $this->db->get('user')->result();
+    $data['user'] = $this->db->query("SELECT 
+    user.*,
+    IF(user.level!='siswa',ptk.nama_ptk,siswa.nama_siswa) AS nama_user
+  FROM
+    `user`
+    LEFT JOIN ptk ON ptk.id_ptk = user.id_ref
+    LEFT JOIN siswa ON siswa.id_siswa = user.id_ref
+    ORDER BY level")->result();
     $this->template->load('template/admin', 'user/index', $data);
   }
 
-  public function show($id) {
-    $user = $this->db->get_where('user', ['id_user' => $id])->row();
+  public function show($id)
+  {
+    $user = $this->db->query("SELECT 
+    user.*,
+    IF(user.level!='siswa',ptk.nama_ptk,siswa.nama_siswa) AS nama_user
+  FROM
+    `user`
+    LEFT JOIN ptk ON ptk.id_ptk = user.id_ref
+    LEFT JOIN siswa ON siswa.id_siswa = user.id_ref
+    WHERE id_user='$id'")->row();
     header('Content-Type: application/json');
     echo json_encode($user);
   }
 
-  public function store() {
+  public function store()
+  {
     $data = [
-      'nama_user' => $this->input->post('nama_user'),
       'username' => $this->input->post('username'),
-      'level' => $this->input->post('level'),
       'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+      'level' => $this->input->post('level'),
+      'id_ref' => $this->input->post('id_ref'),
     ];
 
     $this->db->insert('user', $data);
@@ -34,14 +58,15 @@ class User extends CI_Controller {
     redirect('/user');
   }
 
-  public function update($id) {
+  public function update($id)
+  {
     $data = [
-      'nama_user' => $this->input->post('nama_user'),
       'username' => $this->input->post('username'),
       'level' => $this->input->post('level'),
+      'id_ref' => $this->input->post('id_ref'),
     ];
 
-    if($this->input->post('password') != '')
+    if ($this->input->post('password') != '')
       $data['password'] = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
 
     $this->db->where('id_user', $id);
@@ -51,7 +76,8 @@ class User extends CI_Controller {
     redirect('/user');
   }
 
-  public function delete($id) {
+  public function delete($id)
+  {
     $this->db->where('id_user', $id);
     $this->db->delete('user');
 

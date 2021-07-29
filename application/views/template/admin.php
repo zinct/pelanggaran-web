@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -15,10 +16,17 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/style.css">
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/components.css">
-  
+  <link rel="stylesheet" href="<?= base_url() ?>assets/css/select2.min.css">
+
   <link rel="stylesheet" href="<?= base_url() ?>assets/vendor/izitoast/css/iziToast.css" />
   <link href="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+  <link href="<?= base_url() ?>assets/vendor/datatables/dataTables.checkboxes.css" rel="stylesheet">
+
+  <!-- General JS Scripts -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+  <script src="<?= base_url() ?>assets/js/select2.full.min.js"></script>
 </head>
 
 <body>
@@ -33,7 +41,7 @@
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-envelope"></i></a>
+          <!-- <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-envelope"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
               <div class="dropdown-header">Notifications
                 <div class="float-right">
@@ -91,19 +99,20 @@
                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
               </div>
             </div>
-          </li>
+          </li> -->
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-            <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block"><?= $this->session->userdata('nama_user') ?> (<?= $this->session->userdata('level') ?>)</div></a>
+              <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+              <div class="d-sm-none d-lg-inline-block"><?= $this->session->userdata('nama_user') ?> (<?= $this->session->userdata('level') ?>)</div>
+            </a>
             <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title">User Menu</div>
+              <!-- <div class="dropdown-title">User Menu</div>
               <a href="features-profile.html" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
               <a href="features-settings.html" class="dropdown-item has-icon">
                 <i class="fas fa-cog"></i> Settings
               </a>
-              <div class="dropdown-divider"></div>
+              <div class="dropdown-divider"></div> -->
               <a href="<?= base_url('login/logout') ?>" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
@@ -120,19 +129,29 @@
             <a href="index.html">PS</a>
           </div>
           <ul class="sidebar-menu">
-              <li>
-                <a class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'text-primary' : '' ?>" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
-              </li>
+            <li>
+              <a class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'text-primary' : '' ?>" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            </li>
+            <li class="menu-header">Entry Data</li>
+            <li>
+              <a class="nav-link bg-primary text-white" href="<?= base_url('Pelanggaran_data') ?>">
+                  <i class="fas fa-fw fa-plus-circle"></i><span>Entri Pelanggaran</span>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link <?= $this->uri->segment(1) == 'verifikasi_pelanggaran' ? 'text-primary' : '' ?>" href="<?= base_url('Verifikasi_pelanggaran') ?>"><i class="fas fa-check"></i> <span>Verifikasi Pelanggaran</span></a>
+            </li>
               <li class="menu-header">Master Data</li>
-              <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['siswa', 'kelas', 'jurusan', 'tahun']) ? 'active' : '' ?>">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-graduation-cap"></i> <span>Siswa</span></a>
-                <ul class="dropdown-menu">
-                  <li><a class="nav-link <?= $this->uri->segment(1) == 'siswa' ? 'text-primary' : '' ?>" href="<?= base_url('Siswa') ?>">Data Siswa</a></li>
-                  <li><a class="nav-link <?= $this->uri->segment(1) == 'kelas' ? 'text-primary' : '' ?>" href="<?= base_url('Kelas') ?>">Data Kelas</a></li>
-                  <li><a class="nav-link <?= $this->uri->segment(1) == 'jurusan' ? 'text-primary' : '' ?>" href="<?= base_url('Jurusan') ?>">Data Jurusan</a></li>
-                  <li><a class="nav-link <?= $this->uri->segment(1) == 'tahun' ? 'text-primary' : '' ?>" href="<?= base_url('Tahun') ?>">Data Tahun</a></li>
-                </ul>
-              </li>
+                <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['ptk', 'siswa', 'kelas', 'jurusan', 'tahun']) ? 'active' : '' ?>">
+                  <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-database"></i> <span>Data Master</span></a>
+                  <ul class="dropdown-menu">
+                    <li><a class="nav-link <?= $this->uri->segment(1) == 'ptk' ? 'text-primary' : '' ?>" href="<?= base_url('Ptk') ?>"><i class="fas fa-graduation-cap"></i> Data PTK</a></li>
+                    <li><a class="nav-link <?= $this->uri->segment(1) == 'siswa' ? 'text-primary' : '' ?>" href="<?= base_url('Siswa') ?>"><i class="fas fa-users"></i> Data Siswa</a></li>
+                    <li><a class="nav-link <?= $this->uri->segment(1) == 'kelas' ? 'text-primary' : '' ?>" href="<?= base_url('Kelas') ?>"><i class="fas fa-building"></i> Data Kelas</a></li>
+                    <li><a class="nav-link <?= $this->uri->segment(1) == 'jurusan' ? 'text-primary' : '' ?>" href="<?= base_url('Jurusan') ?>"><i class="fas fa-university"></i> Data Jurusan</a></li>
+                    <li><a class="nav-link <?= $this->uri->segment(1) == 'tahun' ? 'text-primary' : '' ?>" href="<?= base_url('Tahun') ?>"><i class="fas fa-calendar"></i> Data Tahun</a></li>
+                  </ul>
+                </li>
               <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['pelanggaran', 'jenis_pelanggaran', 'kategori_pelanggaran']) ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-exclamation-triangle"></i> <span>Pelanggaran</span></a>
                 <ul class="dropdown-menu">
@@ -148,11 +167,13 @@
                   <li><a class="nav-link <?= $this->uri->segment(1) == 'kategori_sanksi' ? 'text-primary' : '' ?>" href="<?= base_url('kategori_sanksi') ?>">Kategori Sanksi</a></li>
                 </ul>
               </li>
-              <li class="menu-header">User Manajemen</li>
-              <li>
-                <a class="nav-link <?= $this->uri->segment(1) == 'user' ? 'text-primary' : '' ?>" href="<?= base_url('user') ?>"><i class="fas fa-user"></i> <span>User</span></a>
-              </li>
-            </ul>
+                <li class="menu-header">User Manajemen</li>
+                <li>
+                  <a class="nav-link <?= $this->uri->segment(1) == 'user' ? 'text-primary' : '' ?>" href="<?= base_url('user') ?>"><i class="fas fa-user"></i> <span>Pengguna</span></a>
+                </li>
+            <li class="menu-header">Laporan</li>
+              <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan' ? 'text-primary' : '' ?>" href="#Laporan"><i class="fas fa-file"></i> Laporan Pelanggaran</a></li>
+          </ul>
         </aside>
       </div>
       <div class="main-content">
@@ -160,7 +181,7 @@
       </div>
       <footer class="main-footer">
         <div class="footer-left">
-          Copyright © SMK Bakti Nusantara 666 @<?php echo date("Y") ; ?>
+          Copyright © SMK Bakti Nusantara 666 @<?php echo date("Y"); ?>
         </div>
         <div class="footer-right">
           2.3.0
@@ -182,24 +203,33 @@
   <!-- Template JS File -->
   <script src="<?= base_url() ?>assets/js/scripts.js"></script>
   <script src="<?= base_url() ?>assets/js/custom.js"></script>
-  
+  <script src="<?= base_url() ?>assets/js/select2.full.min.js"></script>
+
   <script src="<?= base_url() ?>assets/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="<?= base_url() ?>assets/vendor/datatables/dataTables.checkboxes.min.js"></script>
 
   <!-- Page Specific JS File -->
   <script src="<?= base_url() ?>assets/vendor/izitoast/js/iziToast.js"></script>
   <script>
-    <?php if($this->session->flashdata('success')) : ?>
+    <?php if ($this->session->flashdata('success')) : ?>
       iziToast.success({
-        title: 'Success',
+        title: 'Berhasil',
         message: '<?= $this->session->flashdata('success') ?>',
+        position: 'topRight',
+      });
+    <?php endif; ?>
+    <?php if ($this->session->flashdata('error')) : ?>
+      iziToast.error({
+        title: 'Gagal',
+        message: '<?= $this->session->flashdata('error') ?>',
         position: 'topRight',
       });
     <?php endif; ?>
   </script>
   <script>
-    $(document).ready( function () {
-        $('.dataTable').DataTable();
+    $(document).ready(function() {
+      $('.dataTable').DataTable();
     });
   </script>
   <script src="<?= base_url() ?>assets/vendor/dropify/dropify.js"></script>
@@ -207,4 +237,5 @@
     $('.dropify').dropify();
   </script>
 </body>
+
 </html>

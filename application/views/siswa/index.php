@@ -2,21 +2,32 @@
 	<div class="section-header">
 		<h1>Data Siswa</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item active">Data Siswa</div>
 		</div>
 	</div>
 
 	<div class="section-body">
 		<div class="card">
 			<div class="card-header iseng-sticky bg-white">
-				<h4>Data Siswa</h4>
+				<h4>Data Siswa<br>
+				Tahun Ajaran <?=$tahun->nama_tahun?></h4>
 				<div class="card-header-action">
 					<a href="<?= base_url('siswa/create') ?>" data-target="#crud-modal" class="btn btn-primary">Tambah Data</a>
 				</div>
+				
 			</div>
 			<div class="card-body">
+				<?php
+					if(sizeof($siswa_no_kelas)>=1){
+				?>
+					<div class="alert alert-warning" role="alert">
+						Peringatan! Terdapat <strong><?=sizeof($siswa_no_kelas)?> siswa</strong> yang belum memiliki kelas.
+					</div>
+				<?php
+					}
+				?>
 				<div class="table-responsive">
 					<table class="table table-striped dataTable" id="table-1">
 						<thead>
@@ -27,27 +38,29 @@
 								<th>NIS</th>
 								<th>Nama</th>
 								<th>Kelas</th>
-								<th>Kelamin</th>
+								<th>Jenis Kelamin</th>
 								<th>Alamat</th>
-								<th>Action</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php $i = 1; foreach($siswa as $row) : ?>
+							<?php 
+							// print_r($this->db->last_query());  
+							$i = 1; foreach($siswa as $row) : ?>
 								<tr>
 									<td class="text-center"><?= $i++ ?></td>
 									<td><?= $row->nis ?></td>
 									<td><?= $row->nama_siswa ?></td>
 									<td><?= $row->nama_kelas ?></td>
-									<td><?= $row->kelamin ?></td>
+									<td><?= $row->jenis_kelamin ?></td>
 									<td><?= $row->alamat ?></td>
 									<td>
 										<div class="btn-group">
-											<button type="button" class="btn btn-secondary" data-toggle="dropdown">Detail</button>
+											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="<?= base_url('siswa/show/' . $row->id_siswa) ?>"><i class="fas fa-eye"></i> Detail</a></li>
 												<li><a class="dropdown-item" href="<?= base_url('siswa/edit/' . $row->id_siswa) ?>"><i class="fas fa-edit"></i> Edit</a></li>
-												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_siswa ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
+												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_siswa ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
 											</ul>
 										</div>
 									</td>
@@ -79,7 +92,7 @@
 					</div>
 					<div class="form-group">
 						<label>Kompetensi</label>
-						<select type="text" name="kompetensi_id" id="kompetensi_id" class="form-control" required>
+						<select type="text" name="id_kompetensi" id="id_kompetensi" class="form-control" required>
 							<option value="">Pilih Kompetensi</option>
 						</select>
 					</div>

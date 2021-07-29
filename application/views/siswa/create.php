@@ -1,10 +1,11 @@
 <section class="section">
-	<div class="section-header">
+  <div class="section-header">
 		<h1>Data Siswa</h1>
 		<div class="section-header-breadcrumb">
-			<div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-			<div class="breadcrumb-item"><a href="#">Modules</a></div>
-			<div class="breadcrumb-item">DataTables</div>
+			<div class="breadcrumb-item"><a href="dashboard">Dashboard</a></div>
+			<div class="breadcrumb-item"><a href="#">Data Master</a></div>
+			<div class="breadcrumb-item"><a href="../../Siswa">Data Siswa</a></div>
+			<div class="breadcrumb-item active">Tambah</div>
 		</div>
 	</div>
 
@@ -29,33 +30,15 @@
                     </div>
                   </div>
                   <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kelas</label>
-                    <div class="col-sm-12 col-md-7">
-                      <select type="text" class="form-control" name="kelas_id" required>
-                        <option value="">Pilih Kelas</option>
-                        <?php foreach($kelas as $row) : ?>
-                          <option value="<?= $row->id_kelas ?>"><?= $row->nama_kelas ?></option>
-                        <?php endforeach; ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis Kelamin</label>
                     <div class="col-sm-12 col-md-7">
-                      <select type="text" class="form-control" name="kelamin" required>
+                      <select type="text" class="form-control" name="jenis_kelamin" required>
                         <option value="">Pilih Kelamin</option>
                         <option value="L">Laki - Laki</option>
                         <option value="P">Perempuan</option>
                       </select>
                     </div>
                   </div>
-                  <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Telp</label>
-                    <div class="col-sm-12 col-md-7">
-                      <input type="text" class="form-control" name="telp" placeholder="ketik telp" required>
-                    </div>
-                  </div>
-                  
                   <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tempat Lahir</label>
                     <div class="col-sm-12 col-md-7">
@@ -69,15 +52,15 @@
                     </div>
                   </div>
                   <div class="form-group row mb-4">
-                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Password</label>
-                    <div class="col-sm-12 col-md-7">
-                      <input type="password" class="form-control" name="kata_sandi" placeholder="*****************" required>
-                    </div>
-                  </div>
-                  <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Alamat</label>
                     <div class="col-sm-12 col-md-7">
                       <textarea class="form-control" name="alamat" placeholder="ketik alamat" data-height="100" required></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Telp</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="text" class="form-control" name="telp" placeholder="ketik telp" required>
                     </div>
                   </div>
                   <div class="form-group row mb-4">

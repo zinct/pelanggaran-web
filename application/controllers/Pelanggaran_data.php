@@ -4,164 +4,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Pelanggaran_data extends CI_Controller {
   function __construct(){
     parent::__construct();
-
-    $this->load->model('Kesiswaan_model');
-    $this->load->model('Siswa_model');
-    $this->load->model('Pelanggaran_model');
     $this->load->model('Pelanggaran_data_model');
+
+    if(!$this->session->userdata('login'))
+				redirect('login');
   }
 
-  public function index($cari = null){
-    if (($this->session->userdata('role') != "Kesiswaan") AND ($this->session->userdata('role') != "siswa")) {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
-
-    elseif (!is_null($this->session->userdata('nipy'))) {
-      $nipy = $this->session->userdata('nipy');
-      $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-
-      $nipy = $this->session->userdata('nipy');
-      $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-      $data = array('nipy' => $data_staff->nipy,
-        'nama_staff' => $data_staff->nama,
-        'jabatan' => $data_staff->jabatan,
-      );
-
-      $cari = str_replace("%20", " ", $cari);
-      $data['cari'] = $cari;
-
-      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_Data_Pelanggaran($cari)->result();
-
-      $data['halaman'] = "Data Pelanggaran";
-      $this->template->load('template/template_kesiswaan', 'pelanggaran_data/index', $data);
-    }
-
-
-    elseif (!is_null($this->session->userdata('nis'))) {
-      $nis = $this->session->userdata('nis');
-      $data_siswa = $this->Siswa_model->get_Siswa($nis)->row();
-      $data['nis'] = $data_siswa->nis;
-      $data['siswa'] = $this->Siswa_model->get_Siswa($nis)->row();
-
-      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_Data_Pelanggaran($nis)->result();
-
-      $data['halaman'] = "Data Pelanggaran";
-      $this->template->load('template/template_siswa', 'pelanggaran_data/siswa/index', $data);
-    }
+  public function index(){
+    $data['halaman'] = "Entri Pelanggaran";
+    $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_pelanggaran($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+    $data['jenis_pelanggaran'] = $this->db->get('jenis_pelanggaran')->result();
+    $data['kategori_pelanggaran'] = $this->db->get('kategori_pelanggaran')->result();
+    $this->template->load('template/admin', 'pelanggaran_data/index', $data);
   }
 
-  public function detail($kd_data_pelanggaran){
-    if (($this->session->userdata('role') != "Kesiswaan") AND ($this->session->userdata('role') != "siswa")) {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
-
-    elseif (!is_null($this->session->userdata('nipy'))) {
-      $nipy = $this->session->userdata('nipy');
-      $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-
-      $nipy = $this->session->userdata('nipy');
-      $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-      $data = array('nipy' => $data_staff->nipy,
-        'nama_staff' => $data_staff->nama,
-        'jabatan' => $data_staff->jabatan,
-      );
-
-      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_Data_Pelanggaran($kd_data_pelanggaran)->row();
-
-      $data['halaman'] = "Data Pelanggaran";
-      $this->template->load('template/template_kesiswaan', 'pelanggaran_data/detail', $data);
-    }
-
-
-    elseif (!is_null($this->session->userdata('nis'))) {
-      $nis = $this->session->userdata('nis');
-      $data_siswa = $this->Siswa_model->get_Siswa($nis)->row();
-      $data['nis'] = $data_siswa->nis;
-      $data['siswa'] = $this->Siswa_model->get_Siswa($nis)->row();
-
-      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_Data_Pelanggaran($kd_data_pelanggaran)->row();
-
-      $data['halaman'] = "Data Pelanggaran";
-      $this->template->load('template/template_siswa', 'pelanggaran_data/siswa/detail', $data);
-    }
+  public function show($id) {
+    $pelanggaran = $this->db->get_where('pelanggaran_data', ['id_pelanggaran_data' => $id])->row();
+    header('Content-Type: application/json');
+    echo json_encode($pelanggaran);
   }
 
-  public function form(){
-    if ($this->session->userdata('role') != "Kesiswaan") {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
+  public function store() {
+    $data = [
+      'id_pelanggaran' => $this->input->post('id_pelanggaran'),
+      'id_siswa' => $this->input->post('id_siswa'),
+      'id_ptk' => $this->session->userdata('id_ref'),
+      'id_ptk' => $this->session->userdata('id_ref'),
+      'tgl' => date('Y-m-d H:i:s'),
+      'poin' => $this->input->post('poin'),
+      'catatan' => $this->input->post('catatan'),
+      'id_tahun' => $this->Pelanggaran_data_model->get_TahunAktif()->id_tahun,
+      'id_sanksi' => $this->input->post('id_sanksi'),
+    ];
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-    $data = array('nipy' => $data_staff->nipy,
-      'nama_staff' => $data_staff->nama,
-      'jabatan' => $data_staff->jabatan,
-    );
-
-    $data['siswa'] = $this->Siswa_model->get_Siswa()->result();
-
-    $data['pelanggaran'] = $this->Pelanggaran_model->get_Pelanggaran()->result();
-
-    $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_Data_Pelanggaran()->result();
-
-    $data['halaman'] = "Data Pelanggaran";
-    $this->template->load('template/template_kesiswaan', 'pelanggaran_data/form', $data);
+    $this->db->insert('pelanggaran_data', $data);
+    $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
+    redirect('/pelanggaran_data');
   }
 
-  public function tambah(){
-    if ($this->session->userdata('role') != "Kesiswaan") {
-      $this->session->set_flashdata('message', '
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-        </div>
-        ');
-      redirect(base_url()."login");
-    }
+  // public function update($id) {
+  //   $data = [
+  //     'nama_pelanggaran' => $this->input->post('nama_pelanggaran'),
+  //     'kategori_pelanggaran_id' => $this->input->post('kategori_pelanggaran_id'),
+  //     'jenis_pelanggaran_id' => $this->input->post('jenis_pelanggaran_id'),
+  //     'poin' => $this->input->post('poin'),
+  //   ];
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
+  //   $this->db->where('id_pelanggaran', $id);
+  //   $this->db->update('pelanggaran', $data);
 
-    $nipy = $this->session->userdata('nipy');
-    $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-    $data = array('nipy' => $data_staff->nipy,
-      'nama_staff' => $data_staff->nama,
-      'jabatan' => $data_staff->jabatan,
-    );
+  //   $this->session->set_flashdata('success', 'Berhasil mengubah data.');
+  //   redirect('/pelanggaran');
+  // }
 
-    $kd_data_pelanggaran =  "PEL" . date("YmdHis");
-    echo $pelaku = $this->input->post("pelaku", TRUE);
-    $pelanggaran = $this->input->post("pelanggaran", TRUE);
-    $tanggal_pelanggaran = $this->input->post("tanggal_pelanggaran", TRUE);
-    $status_pelanggaran = "Menunggu Tindak Lanjut";
+  // public function delete($id) {
+  //   $this->db->where('id_pelanggaran', $id);
+  //   $this->db->delete('pelanggaran');
 
-    // $data = array('kd_data_pelanggaran' => "PEL" . date("YmdHis"),
-    //               'kd_pelanggaran' => $this->input->post("pelanggaran", TRUE),
-    //               'pelaku' => $this->input->post("pelaku", TRUE),
-    //               'tanggal_pelanggaran' => $this->input->post("tanggal_pelanggaran", TRUE),
-    //               'status_pelanggaran' => "Menunggu Tindak Lanjut",
-    //               'keterangan' => $this->input->post("keterangan", TRUE),
-    //               );
-
-    // $this->Pelanggaran_data_model->input_Data_Pelanggaran($data);
-
-    // redirect(base_url()."pelanggaran_data");
-  }
+  //   $this->session->set_flashdata('success', 'Berhasil menghapus data.');
+  //   redirect('/pelanggaran');
+  // }
 }

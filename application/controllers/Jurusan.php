@@ -10,6 +10,10 @@ class Jurusan extends CI_Controller {
   }
 
   public function index(){
+    if($this->session->userdata('level')!='admin'){
+      redirect('login');
+    }
+  
     $data['halaman'] = "Jurusan";
     $data['jurusan'] = $this->db->get('jurusan')->result();
     $this->template->load('template/admin', 'jurusan/index', $data);

@@ -12,10 +12,17 @@ class Kelas extends CI_Controller {
   }
 
   public function index(){
+    if($this->session->userdata('level')!='admin'){
+      redirect('login');
+    }
+  
     $data['halaman'] = "Kelas";
-    $data['kelas'] = $this->Kelas_model->get_Kelas();
+    $data['kelas'] = $this->Kelas_model->get_Kelas($this->Kelas_model->get_TahunAktif()->id_tahun);
     $data['jurusan'] = $this->db->get('jurusan')->result();
-    $data['tahun'] = $this->db->get('tahun')->result();
+    $data['ptk'] = $this->db->get('ptk')->result();
+    $data['tingkat'] = ['10','11','12'];
+    $data['tahun'] = $this->Kelas_model->get_TahunAktif();
+    $data['tahuns'] = $this->Kelas_model->get_TahunAll();
     $this->template->load('template/admin', 'kelas/index', $data);
   }
 
@@ -24,12 +31,24 @@ class Kelas extends CI_Controller {
     header('Content-Type: application/json');
     echo json_encode($kelas);
   }
+  
+  public function edit($id) {
+    if($this->session->userdata('level')!='admin'){
+      redirect('login');
+    }
+  
+    $data['kelas'] = $this->Kelas_model->find($id);
+    $data['siswa'] = $this->Kelas_model->get_Siswa($id);
+    $data['siswa_no_kelas'] = $this->Kelas_model->get_SiswaNoKelas($this->Kelas_model->get_TahunAktif()->id_tahun);
+    $this->template->load('template/admin', 'kelas/edit', $data);
+  }
 
   public function store() {
     $data = [
       'nama_kelas' => $this->input->post('nama_kelas'),
-      'jurusan_id' => $this->input->post('jurusan_id'),
-      'tahun_id' => $this->input->post('tahun_id'),
+      'id_jurusan' => $this->input->post('id_jurusan'),
+      'tingkat' => $this->input->post('tingkat'),
+      'id_tahun' => $this->input->post('id_tahun'),
     ];
 
     $this->db->insert('kelas', $data);
@@ -37,18 +56,32 @@ class Kelas extends CI_Controller {
     redirect('/kelas');
   }
 
-  public function update($id) {
-    $data = [
-      'nama_kelas' => $this->input->post('nama_kelas'),
-      'jurusan_id' => $this->input->post('jurusan_id'),
-      'tahun_id' => $this->input->post('tahun_id'),
-    ];
+  public function update($id_kelas) {
 
-    $this->db->where('id_kelas', $id);
-    $this->db->update('kelas', $data);
+    if($this->input->post('submit_remove')!==null){
+      foreach($this->input->post('id_siswa_remove') as $id_siswa){ 
+
+        echo "<script>console.log('ID: ".$id_siswa."')</script>";
+        
+        $this->db->where(['id_kelas'=> $id_kelas, 'id_siswa'=> $id_siswa]);
+        $this->db->delete('kelas_siswa');
+        
+      }
+      echo "<script>console.log('Keluarkan')</script>";
+    }
+    if($this->input->post('submit_add')!==null){
+      foreach($this->input->post('id_siswa_add') as $id_siswa){ 
+
+        echo "<script>console.log('ID: ".$id_siswa."')</script>";
+        
+        $this->db->insert('kelas_siswa', ['id_siswa'=>$id_siswa,'id_kelas'=>$id_kelas]);
+
+      }
+      echo "<script>console.log('Tambahkan')</script>";
+    }
 
     $this->session->set_flashdata('success', 'Berhasil mengubah data.');
-    redirect('/kelas');
+    redirect('/kelas/edit/'.$id_kelas);
   }
 
   public function delete($id) {
