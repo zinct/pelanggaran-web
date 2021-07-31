@@ -128,7 +128,7 @@
                           <span style="font-size: smaller;color: gray;"><em>Catatan: <?= $row->catatan?></em></span>
                         </td>
                         <td class="text-center"><?= $row->poin ?></td>
-                        <td>
+                        <td nowrap>
                           <span style="font-size: smaller;color: gray;"><em><?= $row->nama_kategori_sanksi?></em></span><br>
                           <?=$row->nama_sanksi ?>
                         </td>
