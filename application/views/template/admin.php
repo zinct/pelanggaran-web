@@ -87,7 +87,7 @@
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">PS</a>
           </div>
-          <ul class="sidebar-menu">
+          <ul class="sidebar-menu pb-5">
             <li>
               <a class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'text-primary' : '' ?>" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
             </li>
@@ -131,7 +131,14 @@
                   <a class="nav-link <?= $this->uri->segment(1) == 'user' ? 'text-primary' : '' ?>" href="<?= base_url('user') ?>"><i class="fas fa-user"></i> <span>Pengguna</span></a>
                 </li>
             <li class="menu-header">Laporan</li>
-              <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan' ? 'text-primary' : '' ?>" href="#Laporan"><i class="fas fa-file"></i> Laporan Pelanggaran</a></li>
+            <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['laporan_pelanggaran', 'laporan_pelanggaran_siswa', 'laporan_pelanggaran_kelas']) ? 'active' : '' ?>">
+              <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-file"></i> <span>Laporan</span></a>
+              <ul class="dropdown-menu">
+                <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan_pelanggaran' ? 'text-primary' : '' ?>" href="<?= base_url('laporan_pelanggaran') ?>">Pelanggaran</a></li>
+                <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan_pelanggaran_siswa' ? 'text-primary' : '' ?>" href="<?= base_url('laporan_pelanggaran_siswa') ?>">Pelanggaran Siswa</a></li>
+                <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan_pelanggaran_kelas' ? 'text-primary' : '' ?>" href="<?= base_url('laporan_pelanggaran_kelas') ?>">Pelanggaran Kelas</a></li>
+              </ul>
+            </li>
           </ul>
         </aside>
       </div>
