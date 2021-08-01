@@ -14,6 +14,7 @@
 				<h4>Data Siswa<br>
 				Tahun Ajaran <?=$tahun->nama_tahun?></h4>
 				<div class="card-header-action">
+					<a href="#" data-target="#import-modal" data-toggle="modal" class="btn btn-success">Import</a>
 					<a href="<?= base_url('siswa/create') ?>" data-target="#crud-modal" class="btn btn-primary">Tambah Data</a>
 				</div>
 				
@@ -74,6 +75,42 @@
 	</div>
 </section>
 
+<form action="<?= base_url('siswa/import') ?>" method="POST" enctype="multipart/form-data">
+    @csrf
+    <div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Import Data</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="import">Format File Berupa (XLS, XLSX)</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="import" onchange="fileHandler(event)" required>
+                <label class="custom-file-label">Choose file</label>
+              </div>
+            </div>
+            <p>Gunakan <a href="<?= base_url('assets/file/TEMPLATE SISWA.xlsx') ?>">template ini</a> untuk melakukan import produk. ikuti langkah dibawah ini : </p>
+            <ul class="list-unstyled">
+              <li>1. Masukkan data sesuai format (.xls) yang bertanda merah wajib diisi.</li>
+              <li>2. Pastikan Tipe Data pada excel adalah TEXT.</li>
+              <li>3. Pastikan data anda tidak mengandung karakter seperti (,:;').</li>
+              <li>4. Unggah file excel anda pada form input diatas lalu klik 'IMPORT'.</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="submit" class="btn btn-primary">Import</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
 <!-- CRUD Modal -->
 <form action="" method="POST" id="crud">
 	<div class="modal fade" id="crud-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -130,4 +167,9 @@
 	function deleteData(id) {
 		$('#delete-form').attr('action', `<?= base_url() ?>/siswa/delete/${id}`);
 	}
+
+	function fileHandler(e) {
+      const fileName = e.target.value;
+      e.target.nextElementSibling.innerText = fileName;
+    }
 </script>

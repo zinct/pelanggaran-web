@@ -35,6 +35,7 @@ class Siswa extends CI_Controller
 
     $data['siswa'] = $this->Siswa_model->find($id);
     $data['jenis_kelamin'] = ['L', 'P'];
+    $data['status'] = [1 , 0 ];
 
     $data['halaman'] = "Siswa";
     $this->template->load('template/admin', 'siswa/show', $data);
@@ -72,6 +73,7 @@ class Siswa extends CI_Controller
 
     $data['siswa'] = $this->Siswa_model->find($id);
     $data['jenis_kelamin'] = ['L', 'P'];
+    $data['status'] = [1 , 0 ];
     $this->template->load('template/admin', 'siswa/edit', $data);
   }
 
@@ -85,6 +87,9 @@ class Siswa extends CI_Controller
       'tanggal_lahir' => $this->input->post('tanggal_lahir'),
       'alamat' => $this->input->post('alamat'),
       'telp' => $this->input->post('telp'),
+      'keterangan' => $this->input->post('keterangan'),
+      'status' => $this->input->post('status'),
+      'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
     ]);
 
     $this->session->set_flashdata('success', 'Berhasil menambahkan data.');
@@ -96,11 +101,17 @@ class Siswa extends CI_Controller
     $data = [
       'nis' => $this->input->post('nis'),
       'nama_siswa' => $this->input->post('nama_siswa'),
+      'jenis_kelamin' => $this->input->post('jenis_kelamin'),
       'tempat_lahir' => $this->input->post('tempat_lahir'),
       'tanggal_lahir' => $this->input->post('tanggal_lahir'),
       'alamat' => $this->input->post('alamat'),
       'telp' => $this->input->post('telp'),
+      'keterangan' => $this->input->post('keterangan'),
+      'status' => $this->input->post('status'),
     ];
+
+    if ($this->input->post('password') != '')
+      $data['password'] = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
 
     $this->db->where('id_siswa', $id);
     $this->db->update('siswa', $data);
@@ -108,32 +119,6 @@ class Siswa extends CI_Controller
     $this->session->set_flashdata('success', 'Berhasil mengubah data.');
     redirect('/siswa');
   }
-
-  // public function detail($nis){
-  //   if ($this->session->userdata('role') != "Kesiswaan") {
-  //     $this->session->set_flashdata('message', '
-  //       <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  //       <i class="icon fa fa-warning"></i> Silahkan Login Terlebih Dahulu.
-  //       </div>
-  //       ');
-  //     redirect(base_url()."login");
-  //   }
-
-  //   $nipy = $this->session->userdata('nipy');
-  //   $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-
-  //   $nipy = $this->session->userdata('nipy');
-  //   $data_staff = $this->Kesiswaan_model->get_Kesiswaan($nipy);
-  //   $data = array('nipy' => $data_staff->nipy,
-  //     'nama_staff' => $data_staff->nama,
-  //     'jabatan' => $data_staff->jabatan,
-  //   );
-
-  //   $data['siswa'] = $this->Siswa_model->get_Siswa($nis)->row();
-
-  //   $data['halaman'] = "Siswa";
-  //   $this->template->load('template/template_kesiswaan', 'siswa/detail', $data);
-  // }
 
   public function delete($id)
   {
@@ -143,4 +128,54 @@ class Siswa extends CI_Controller
     $this->session->set_flashdata('success', 'Berhasil menghapus data.');
     redirect('/siswa');
   }
+
+  public function import()
+        {
+            if(isset($_FILES["import"]["name"])){
+                  // upload
+                $file_tmp = $_FILES['import']['tmp_name'];
+                $file_name = $_FILES['import']['name'];
+                $file_size =$_FILES['import']['size'];
+                $file_type=$_FILES['import']['type'];
+                // move_uploaded_file($file_tmp,"uploads/".$file_name); // simpan filenya di folder uploads
+                
+                $object = PHPExcel_IOFactory::load($file_tmp);
+
+                $data = [];
+        
+                foreach($object->getWorksheetIterator() as $worksheet){
+        
+                    $highestRow = $worksheet->getHighestRow();
+                    $highestColumn = $worksheet->getHighestColumn();
+        
+                    for($row=2; $row <= $highestRow; $row++){
+
+                        array_push($data, array(
+                            'nis' => $worksheet->getCellByColumnAndRow(0, $row)->getValue(),
+                            'nama_siswa' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                            'jenis_kelamin' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                            'tempat_lahir' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                            'tanggal_lahir' => date('Y-m-d', strtotime($worksheet->getCellByColumnAndRow(4, $row)->getValue())),
+                            'telp' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                            'password' => password_hash($worksheet->getCellByColumnAndRow(6, $row)->getValue(), PASSWORD_DEFAULT),
+                            'status' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
+                            'alamat' => $worksheet->getCellByColumnAndRow(8, $row)->getValue(),
+                            'keterangan' => $worksheet->getCellByColumnAndRow(9, $row)->getValue(),
+                        ));
+        
+                    } 
+        
+                  }
+                  
+                $this->db->insert_batch('siswa', $data);
+        
+                $this->session->set_flashdata('success', 'Berhasil menimport data.');
+                redirect('/siswa');
+            }
+            else
+            {
+              $this->session->set_flashdata('error', 'Gagal mengubah data.');
+              redirect('/siswa');
+            }
+        }
 }

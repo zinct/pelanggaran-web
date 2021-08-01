@@ -71,29 +71,7 @@
         <h4>Statistics</h4>
       </div>
       <div class="card-body">
-        <canvas id="myChart" height="182"></canvas>
-        <div class="statistic-details mt-sm-4">
-          <div class="statistic-details-item">
-            <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 7%</span>
-            <div class="detail-value">$243</div>
-            <div class="detail-name">Today's Sales</div>
-          </div>
-          <div class="statistic-details-item">
-            <span class="text-muted"><span class="text-danger"><i class="fas fa-caret-down"></i></span> 23%</span>
-            <div class="detail-value">$2,902</div>
-            <div class="detail-name">This Week's Sales</div>
-          </div>
-          <div class="statistic-details-item">
-            <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span>9%</span>
-            <div class="detail-value">$12,821</div>
-            <div class="detail-name">This Month's Sales</div>
-          </div>
-          <div class="statistic-details-item">
-            <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 19%</span>
-            <div class="detail-value">$92,142</div>
-            <div class="detail-name">This Year's Sales</div>
-          </div>
-        </div>
+        <canvas id="myChart" height="140"></canvas>
       </div>
     </div>
   </div>
@@ -131,30 +109,83 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
 <script>
+  const labels = <?= json_encode($statistik) ?>.map(row => row.nama_bulan);
+  const pelanggaran = <?= json_encode($statistik) ?>.map(row => row.pelanggaran);
+
     new Chart(document.getElementById("myChart"), {
       type: 'line',
       data: {
-        labels: ["Jan", "Feb"],
-        datasets: [{
-          label: "Jumlah Transaksi",
-          lineTension: 0.3,
-          backgroundColor: "rgba(78, 115, 223, 0.05)",
-          borderColor: "rgba(78, 115, 223, 1)",
-          pointRadius: 3,
-          pointBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointBorderColor: "rgba(78, 115, 223, 1)",
-          pointHoverRadius: 3,
-          pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-          pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: [20, 10],
-        }],
+        labels,
+        datasets: [
+          {
+            label: "Jumlah Pelanggaran",
+            lineTension: 0.3,
+            backgroundColor: "rgba(78, 115, 223, 0.05)",
+            borderColor: "rgba(78, 115, 223, 1)",
+            pointRadius: 3,
+            pointBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointBorderColor: "rgba(78, 115, 223, 1)",
+            pointHoverRadius: 3,
+            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+            pointHitRadius: 10,
+            pointBorderWidth: 2,
+            data: pelanggaran,
+          },
+      ],
       },
       options: {
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+          }
+        },
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'date'
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              padding: 10,
+              stepSize: 1,
+              min: 0,
+            },
+            gridLines: {
+              color: "rgb(234, 236, 244)",
+              zeroLineColor: "rgb(234, 236, 244)",
+              drawBorder: false,
+              borderDash: [2],
+              zeroLineBorderDash: [2]
+            }
+          }],
+        },
         legend: {
           display: false
         },
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          titleMarginBottom: 10,
+          titleFontColor: '#6e707e',
+          titleFontSize: 14,
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          intersect: false,
+          mode: 'index',
+          caretPadding: 10,
+        }
       }
     });
   </script>

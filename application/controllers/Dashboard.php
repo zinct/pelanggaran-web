@@ -16,6 +16,8 @@ class Dashboard extends CI_Controller {
 		$data['jumlah_pelanggaran_pending'] = $this->db->where('status', 'Jatuh Sanksi')->count_all_results('pelanggaran_data');
 		$data['jumlah_siswa'] = $this->db->count_all_results('siswa');
 		$data['jumlah_ptk'] = $this->db->count_all_results('ptk');
+
+		$data['statistik'] = $this->Pelanggaran_data_model->get_pelanggaran_statistik($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
 		$this->template->load('template/admin', 'dashboard', $data);
 	}
 }

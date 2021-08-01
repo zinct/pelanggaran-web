@@ -70,6 +70,32 @@
                     </div>
                   </div>
                   <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Status</label>
+                    <div class="col-sm-12 col-md-7">
+                      <select class="form-control" name="status">
+                        <?php foreach($status as $row) : ?>
+                          <?php if ($row == $siswa->status) : ?>
+                            <option value="<?= $row ?>" selected><?= $row == 1 ? 'Aktif' : 'Tidak aktif' ?></option>
+                          <?php else : ?>
+                            <option value="<?= $row ?>"><?= $row == 1 ? 'Aktif' : 'Tidak Aktif' ?></option>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Password</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="text" class="form-control" name="password" placeholder="**********">
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Keterangan</label>
+                    <div class="col-sm-12 col-md-7">
+                      <textarea class="form-control" name="keterangan" placeholder="ketik keterangan" data-height="100"><?= $siswa->keterangan ?></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                     <div class="col-sm-12 col-md-7">
                       <button type="submit" class="btn btn-primary">Submit</button>

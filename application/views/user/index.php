@@ -13,7 +13,6 @@
 				<h4>Data Pengguna</h4>
 				<div class="card-header-action">
 					<a href="#" data-toggle="modal" data-target="#crud-modal" onclick="createData('ptk')" class="btn btn-primary">Tambah Pengguna PTK</a>
-					<a href="#" data-toggle="modal" data-target="#crud-modal" onclick="createData('siswa')" class="btn btn-primary">Tambah Pengguna Siswa</a>
 				</div>
 			</div>
 			<div class="card-body">

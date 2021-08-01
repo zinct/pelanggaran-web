@@ -56,6 +56,14 @@ class Pelanggaran_data_model extends CI_Model{
         return $this->db->get('pelanggaran_data')->result();
     }
 
+    function get_Pelanggaran_statistik($id_tahun){
+        return $this->db->query("
+            SELECT bulan.*, IFNULL(pelanggaran.pelanggaran, 0) AS pelanggaran FROM bulan
+            LEFT JOIN
+                (SELECT MONTH(tgl) AS tgl, COUNT(id_pelanggaran) AS pelanggaran FROM pelanggaran_data WHERE status = 'Disetujui' AND YEAR(tgl) = YEAR(NOW()) GROUP BY MONTH(tgl)) AS pelanggaran ON id_bulan = tgl
+        ")->result();
+    }
+
     function get_Laporan_Pelanggaran_siswa($id_tahun){
         $this->db->select(
             '   
@@ -75,6 +83,7 @@ class Pelanggaran_data_model extends CI_Model{
         $this->db->join('sanksi', 'sanksi.id_sanksi = pelanggaran_data.id_sanksi');
         $this->db->join('kategori_sanksi', 'kategori_sanksi.id_kategori_sanksi = sanksi.kategori_sanksi_id');
         $this->db->group_by('pelanggaran_data.id_siswa');
+        $this->db->group_by('kelas.nama_kelas'); 
         $this->db->where('tahun.id_tahun', $id_tahun);
         $this->db->where('pelanggaran_data.status', 'Disetujui');
 
@@ -101,6 +110,7 @@ class Pelanggaran_data_model extends CI_Model{
         $this->db->join('sanksi', 'sanksi.id_sanksi = pelanggaran_data.id_sanksi');
         $this->db->join('kategori_sanksi', 'kategori_sanksi.id_kategori_sanksi = sanksi.kategori_sanksi_id');
         $this->db->group_by('kelas.id_kelas');
+        $this->db->group_by('kelas.nama_kelas');
         $this->db->where('tahun.id_tahun', $id_tahun);
         $this->db->where('pelanggaran_data.status', 'Disetujui');
 
