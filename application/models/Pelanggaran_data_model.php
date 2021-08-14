@@ -58,9 +58,48 @@ class Pelanggaran_data_model extends CI_Model{
 
     function get_Pelanggaran_statistik($id_tahun){
         return $this->db->query("
-            SELECT bulan.*, IFNULL(pelanggaran.pelanggaran, 0) AS pelanggaran FROM bulan
-            LEFT JOIN
-                (SELECT MONTH(tgl) AS tgl, COUNT(id_pelanggaran) AS pelanggaran FROM pelanggaran_data WHERE status = 'Disetujui' AND YEAR(tgl) = YEAR(NOW()) GROUP BY MONTH(tgl)) AS pelanggaran ON id_bulan = tgl
+            SELECT nama_jenis_pelanggaran AS pelanggaran
+            FROM pelanggaran_data 
+            JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
+            JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui'
+            GROUP BY nama_jenis_pelanggaran
+        ")->result();
+    }
+
+    function get_pelanggaran_kelas12($id_tahun){
+        return $this->db->query("
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            FROM pelanggaran_data
+            JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
+            JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
+            WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '12'
+            GROUP BY pelanggaran.id_jenis_pelanggaran
+        ")->result();
+    }
+
+    function get_pelanggaran_kelas11($id_tahun){
+        return $this->db->query("
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            FROM pelanggaran_data
+            JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
+            JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
+            WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '11'
+            GROUP BY pelanggaran.id_jenis_pelanggaran
+        ")->result();
+    }
+
+    function get_pelanggaran_kelas10($id_tahun){
+        return $this->db->query("
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            FROM pelanggaran_data
+            JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
+            JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
+            WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '10'
+            GROUP BY pelanggaran.id_jenis_pelanggaran
         ")->result();
     }
 

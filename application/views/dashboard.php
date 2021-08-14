@@ -109,83 +109,66 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
 <script>
-  const labels = <?= json_encode($statistik) ?>.map(row => row.nama_bulan);
-  const pelanggaran = <?= json_encode($statistik) ?>.map(row => row.pelanggaran);
+  const pelanggaran = <?= json_encode($pelanggaran) ?>.map(row => row.pelanggaran);
+  const kelas12 = <?= json_encode($kelas12) ?>.map(row => row.total);
+  const kelas11 = <?= json_encode($kelas11) ?>.map(row => row.total);
+  const kelas10 = <?= json_encode($kelas10) ?>.map(row => row.total);
 
-    new Chart(document.getElementById("myChart"), {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [
-          {
-            label: "Jumlah Pelanggaran",
-            lineTension: 0.3,
-            backgroundColor: "rgba(78, 115, 223, 0.05)",
-            borderColor: "rgba(78, 115, 223, 1)",
-            pointRadius: 3,
-            pointBackgroundColor: "rgba(78, 115, 223, 1)",
-            pointBorderColor: "rgba(78, 115, 223, 1)",
-            pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-            pointHitRadius: 10,
-            pointBorderWidth: 2,
-            data: pelanggaran,
-          },
-      ],
+  const labels = pelanggaran;
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: 'Kelas 10',
+        data: kelas10,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgb(255, 99, 132)",
+        borderWidth: 1,
       },
-      options: {
-        layout: {
-          padding: {
-            left: 10,
-            right: 25,
-            top: 25,
-            bottom: 0
+      {
+        label: 'Kelas 11',
+        data: kelas11,
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgb(75, 192, 192)",
+        borderWidth: 1,
+      },
+      {
+        label: 'Kelas 12',
+        data: kelas12,
+        backgroundColor: "rgba(153, 102, 255, 0.2)",
+        borderColor: "rgb(153, 102, 255)",
+        borderWidth: 1,
+      },
+    ]
+  };
+
+  new Chart(document.getElementById("myChart"), {
+    type: 'bar',
+    data: data,
+    options: {
+       responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Chart.js Bar Chart'
           }
-        },
-        scales: {
-          xAxes: [{
-            time: {
-              unit: 'date'
-            },
-            gridLines: {
-              display: false,
-              drawBorder: false
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              padding: 10,
-              stepSize: 1,
-              min: 0,
-            },
-            gridLines: {
-              color: "rgb(234, 236, 244)",
-              zeroLineColor: "rgb(234, 236, 244)",
-              drawBorder: false,
-              borderDash: [2],
-              zeroLineBorderDash: [2]
-            }
-          }],
         },
         legend: {
           display: false
         },
-        tooltips: {
-          backgroundColor: "rgb(255,255,255)",
-          bodyFontColor: "#858796",
-          titleMarginBottom: 10,
-          titleFontColor: '#6e707e',
-          titleFontSize: 14,
-          borderColor: '#dddfeb',
-          borderWidth: 1,
-          xPadding: 15,
-          yPadding: 15,
-          displayColors: false,
-          intersect: false,
-          mode: 'index',
-          caretPadding: 10,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    min: 0,
+                }
+            }],
+            
         }
       }
-    });
+  });
+
+  
   </script>

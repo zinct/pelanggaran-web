@@ -17,7 +17,10 @@ class Dashboard extends CI_Controller {
 		$data['jumlah_siswa'] = $this->db->count_all_results('siswa');
 		$data['jumlah_ptk'] = $this->db->count_all_results('ptk');
 
-		$data['statistik'] = $this->Pelanggaran_data_model->get_pelanggaran_statistik($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+		$data['pelanggaran'] = $this->Pelanggaran_data_model->get_pelanggaran_statistik($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+		$data['kelas12'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas12($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+		$data['kelas11'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas11($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+		$data['kelas10'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas10($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
 		$this->template->load('template/admin', 'dashboard', $data);
 	}
 }

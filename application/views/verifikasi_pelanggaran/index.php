@@ -13,7 +13,13 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-8 mx-auto">
-							<input class="form-control form-control-lg text-lg" v-on:keyup.enter.prevent="searchSiswa" id="search" name="nis" type="text" autofocus="on" placeholder="Masukan NIS siswa ex. 181912070084">
+							<!-- <input class="form-control form-control-lg text-lg" v-on:keyup.enter.prevent="searchSiswa" id="search" name="nis" type="text" autofocus="on" placeholder="Masukan NIS siswa ex. 181912070084"> -->
+							<div class="d-flex mx-4">
+								<select class="form-control select2" name="nis" id="select-siswa" required>
+								</select>
+								<button type="submit" class="btn btn-primary px-3"><i class="fas fa-search"></i></button>
+							</div>
+						</div>
 						</div> 
 						<div class="row mt-1" style="min-height: 185px;">
 							<div class="col-md-6 mx-auto">
@@ -25,3 +31,20 @@
 		</form>
 	</div>
 </section>
+
+<script>
+	$.ajax({
+			url: `<?= base_url() ?>siswa/all`,
+			success: function(data) {
+				$("#select-siswa").empty().append('<option value="">Pilih Siswa</option>');
+				data.forEach(i => {
+					$("#select-siswa").append("<option value='" + i.nis + "'>" + i.nama_siswa + " (NIS: " + i.nis + ")<br> Kelas: " + i.nama_kelas + "</option>");
+				});
+
+				$('#select-siswa').select2({
+					templateResult: templateResult,
+					templateSelection: templateSelection
+				});
+			}
+		});
+</script>
