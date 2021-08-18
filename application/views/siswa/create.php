@@ -14,7 +14,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <form action="<?= base_url('siswa/store') ?>" enctype="multipart/form-data" method="POST">
+          <?php echo form_open_multipart('siswa/store');?>
               <div class="row">
                 <div class="col-8">
                   <div class="form-group row mb-4">

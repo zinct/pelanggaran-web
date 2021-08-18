@@ -84,7 +84,7 @@
             <ul class="list-unstyled list-unstyled-border">
               <?php foreach($aktifitas as $row) : ?>
                 <li class="media">
-                  <img class="mr-3 rounded-circle" width="50" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" alt="avatar">
+                  <img class="mr-3 rounded-circle" width="50" src="<?= $row->image ? base_url("upload/img/siswa/$row->image") : base_url('assets/img/default/siswa.png') ?>" alt="avatar">
                   <div class="media-body">
                     <div class="float-right text-primary"><?= date('Y-m-d', strtotime($row->tgl))  ?></div>
                     <div class="media-title"><?= $row->nama_siswa ?></div>
@@ -155,9 +155,6 @@
             display: true,
             text: 'Chart.js Bar Chart'
           }
-        },
-        legend: {
-          display: false
         },
         scales: {
             yAxes: [{

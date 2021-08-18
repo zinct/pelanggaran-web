@@ -28,10 +28,6 @@
                       <h2>Tentang Pelanggaran Siswa</h2>
                       <p>
                           <strong>Pelanggaran</strong> adalah kegiatan pendidikan, pelatihan dan pembelajaran yang dilaksanakan di Dunia Usaha Atau Dunia Industri dalam upaya pendekatan ataupun untuk meningkatkan mutu siswa Sekolah Menengah Kejuruan (SMK) dengan kompetensi (kemampuan) siswa sesuai bidangnya dan juga menambah bekal untuk masa mendatang guna memasuki dunia kerja yang semangkin banyak serta ketat dalam persaingannya seperti di masa sekarang ini.<br><br>
-                          <a href="index.php-4.html?page=about" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                              <span>Selengkapnya</span>
-                              <i class="bi bi-arrow-right"></i>
-                          </a>
                       </p>
                   </div>
           </div>

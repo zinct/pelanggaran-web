@@ -14,6 +14,14 @@ class Siswa_model extends CI_Model{
         $this->db->where('tahun.is_aktif', 1);
         return $this->db->get('siswa')->result();
     }
+    function get_Siswa_id($id){
+        $this->db->join('kelas_siswa', 'kelas_siswa.id_siswa = siswa.id_siswa')
+                ->join('kelas', 'kelas_siswa.id_kelas = kelas.id_kelas')
+                ->join('tahun', 'tahun.id_tahun = kelas.id_tahun');
+        $this->db->where('tahun.is_aktif', 1);
+        $this->db->where('siswa.id_siswa', $id);
+        return $this->db->get('siswa')->row();
+    }
 
     function get_SiswaNoKelas($id_tahun){
         $this->db->join('kelas_siswa', 'kelas_siswa.id_siswa = siswa.id_siswa','left')

@@ -82,12 +82,13 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="index.html">Pelanggaran Siswa</a>
+            <img class="img-fluid mr-5 mt-3" src="<?= base_url('assets/img/smk.png') ?>" style="max-width: 150px;">
+            <a class="" href="<?= base_url('home') ?>">Pelanggaran Siswa</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">PS</a>
           </div>
-          <ul class="sidebar-menu pb-5">
+          <ul class="sidebar-menu pb-5 mt-3">
             <li>
               <a class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'text-primary' : '' ?>" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
             </li>

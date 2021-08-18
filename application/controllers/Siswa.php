@@ -48,6 +48,13 @@ class Siswa extends CI_Controller
     echo json_encode($siswa);
   }
 
+  public function getSiswa($id)
+  {
+    $siswa = $this->Siswa_model->get_Siswa_id($id);
+    header('Content-Type: application/json');
+    echo json_encode($siswa);
+  }
+
   public function getPoin($id_siswa)
   {
     $poin = $this->Siswa_model->get_poin($id_siswa);
@@ -79,7 +86,9 @@ class Siswa extends CI_Controller
 
   public function store()
   {
+    $img = $this->do_upload();
     $this->db->insert('siswa', [
+      'image' => $img,
       'nis' => $this->input->post('nis'),
       'nama_siswa' => $this->input->post('nama_siswa'),
       'jenis_kelamin' => $this->input->post('jenis_kelamin'),
@@ -96,6 +105,16 @@ class Siswa extends CI_Controller
     redirect('/siswa');
   }
 
+  public function do_upload(){
+    $config['upload_path'] = "./upload/img/siswa/";
+    $config['allowed_types'] = 'jpg|png|jpeg';
+    $config['max_size'] = 2000;
+
+    $this->load->library('upload', $config);
+    $this->upload->do_upload('avatar');
+    return $this->upload->data()['file_name'];
+  }
+
   public function update($id)
   {
     $data = [
@@ -109,6 +128,8 @@ class Siswa extends CI_Controller
       'keterangan' => $this->input->post('keterangan'),
       'status' => $this->input->post('status'),
     ];
+    $img = $this->do_upload();
+    if($img) $data['image'] = $img;    
 
     if ($this->input->post('password') != '')
       $data['password'] = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
@@ -130,52 +151,52 @@ class Siswa extends CI_Controller
   }
 
   public function import()
-        {
-            if(isset($_FILES["import"]["name"])){
-                  // upload
-                $file_tmp = $_FILES['import']['tmp_name'];
-                $file_name = $_FILES['import']['name'];
-                $file_size =$_FILES['import']['size'];
-                $file_type=$_FILES['import']['type'];
-                // move_uploaded_file($file_tmp,"uploads/".$file_name); // simpan filenya di folder uploads
-                
-                $object = PHPExcel_IOFactory::load($file_tmp);
+  {
+      if(isset($_FILES["import"]["name"])){
+            // upload
+          $file_tmp = $_FILES['import']['tmp_name'];
+          $file_name = $_FILES['import']['name'];
+          $file_size =$_FILES['import']['size'];
+          $file_type=$_FILES['import']['type'];
+          // move_uploaded_file($file_tmp,"uploads/".$file_name); // simpan filenya di folder uploads
+          
+          $object = PHPExcel_IOFactory::load($file_tmp);
 
-                $data = [];
-        
-                foreach($object->getWorksheetIterator() as $worksheet){
-        
-                    $highestRow = $worksheet->getHighestRow();
-                    $highestColumn = $worksheet->getHighestColumn();
-        
-                    for($row=2; $row <= $highestRow; $row++){
+          $data = [];
+  
+          foreach($object->getWorksheetIterator() as $worksheet){
+  
+              $highestRow = $worksheet->getHighestRow();
+              $highestColumn = $worksheet->getHighestColumn();
+  
+              for($row=2; $row <= $highestRow; $row++){
 
-                        array_push($data, array(
-                            'nis' => $worksheet->getCellByColumnAndRow(0, $row)->getValue(),
-                            'nama_siswa' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
-                            'jenis_kelamin' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
-                            'tempat_lahir' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
-                            'tanggal_lahir' => date('Y-m-d', strtotime($worksheet->getCellByColumnAndRow(4, $row)->getValue())),
-                            'telp' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
-                            'password' => password_hash($worksheet->getCellByColumnAndRow(6, $row)->getValue(), PASSWORD_DEFAULT),
-                            'status' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
-                            'alamat' => $worksheet->getCellByColumnAndRow(8, $row)->getValue(),
-                            'keterangan' => $worksheet->getCellByColumnAndRow(9, $row)->getValue(),
-                        ));
-        
-                    } 
-        
-                  }
-                  
-                $this->db->insert_batch('siswa', $data);
-        
-                $this->session->set_flashdata('success', 'Berhasil menimport data.');
-                redirect('/siswa');
+                  array_push($data, array(
+                      'nis' => $worksheet->getCellByColumnAndRow(0, $row)->getValue(),
+                      'nama_siswa' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                      'jenis_kelamin' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                      'tempat_lahir' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                      'tanggal_lahir' => date('Y-m-d', strtotime($worksheet->getCellByColumnAndRow(4, $row)->getValue())),
+                      'telp' => $worksheet->getCellByColumnAndRow(5, $row)->getValue(),
+                      'password' => password_hash($worksheet->getCellByColumnAndRow(6, $row)->getValue(), PASSWORD_DEFAULT),
+                      'status' => $worksheet->getCellByColumnAndRow(7, $row)->getValue(),
+                      'alamat' => $worksheet->getCellByColumnAndRow(8, $row)->getValue(),
+                      'keterangan' => $worksheet->getCellByColumnAndRow(9, $row)->getValue(),
+                  ));
+  
+              } 
+  
             }
-            else
-            {
-              $this->session->set_flashdata('error', 'Gagal mengubah data.');
-              redirect('/siswa');
-            }
-        }
+            
+          $this->db->insert_batch('siswa', $data);
+  
+          $this->session->set_flashdata('success', 'Berhasil menimport data.');
+          redirect('/siswa');
+      }
+      else
+      {
+        $this->session->set_flashdata('error', 'Gagal mengubah data.');
+        redirect('/siswa');
+      }
+  }
 }

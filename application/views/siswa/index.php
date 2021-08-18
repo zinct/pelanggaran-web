@@ -76,7 +76,6 @@
 </section>
 
 <form action="<?= base_url('siswa/import') ?>" method="POST" enctype="multipart/form-data">
-    @csrf
     <div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -109,7 +108,7 @@
         </div>
       </div>
     </div>
-  </form>
+</form>
 
 <!-- CRUD Modal -->
 <form action="" method="POST" id="crud">

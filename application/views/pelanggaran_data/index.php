@@ -11,6 +11,7 @@
 		<div class="card">
 			<div class="card-body">
 				<form action="<?= base_url('Pelanggaran_data/store') ?>" method="POST">
+				<input type="hidden" id="id_kelas" name="id_kelas" value="">
 					<div class="row">
 						<div class="col-sm-12 col-md-6">
 							<div class="form-group">
@@ -186,6 +187,12 @@
 					$("#number-poin-tercatat").val(poin_tercatat);
 				}
 			});
+			$.ajax({
+				url: `<?= base_url() ?>siswa/getsiswa/${id_siswa}`,
+				success: function(data) {
+					$('#id_kelas').val(data.id_kelas)
+				},
+			})
 		});
 
 		$.ajax({

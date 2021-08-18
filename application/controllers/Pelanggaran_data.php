@@ -35,6 +35,7 @@ class Pelanggaran_data extends CI_Controller {
       'catatan' => $this->input->post('catatan'),
       'id_tahun' => $this->Pelanggaran_data_model->get_TahunAktif()->id_tahun,
       'id_sanksi' => $this->input->post('id_sanksi'),
+      'id_kelas' => $this->input->post('id_kelas'),
     ];
 
     $this->db->insert('pelanggaran_data', $data);

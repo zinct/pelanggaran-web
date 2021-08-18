@@ -24,6 +24,46 @@
                     </div>
                   </div>
                   <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">nipy</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="text" class="form-control" name="nipy" placeholder="nipy" required>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">jk</label>
+                    <div class="col-sm-12 col-md-7">
+                      <select type="text" class="form-control" name="jk" required>
+                        <option value="">Pilih Kelamin</option>
+                        <option value="L">Laki - Laki</option>
+                        <option value="P">Perempuan</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">tempat lahir</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="text" class="form-control" name="tempat_lahir" placeholder="tempat_lahir" required>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">tanggal lahir</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="date" class="form-control" name="tanggal_lahir" required>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Telp</label>
+                    <div class="col-sm-12 col-md-7">
+                      <input type="text" class="form-control" name="telp" placeholder="telp" required>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
+                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Alamat</label>
+                    <div class="col-sm-12 col-md-7">
+                      <textarea class="form-control" name="alamat" data-height="100" placeholder="alamat"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row mb-4">
                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                     <div class="col-sm-12 col-md-7">
                       <button type="submit" class="btn btn-primary">Submit</button>

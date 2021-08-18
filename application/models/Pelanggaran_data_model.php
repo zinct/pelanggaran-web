@@ -19,6 +19,7 @@ class Pelanggaran_data_model extends CI_Model{
                 pelanggaran_data.id_siswa, 
                 siswa.nama_siswa, 
                 siswa.nis, 
+                siswa.image,
                 kelas.nama_kelas, 
                 pelanggaran_data.id_ptk, 
                 ptk.nama_ptk, 

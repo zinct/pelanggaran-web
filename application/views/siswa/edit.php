@@ -105,7 +105,7 @@
                 <div class="col">
                   <div class="form-group row mb-4">
                     <div class="col-sm-12 col-md-7">
-                      <input type="file" class="dropify" name="avatar" data-default-file="<?= base_url() ?>assets/img/default/siswa.png" data-show-remove="false" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" />
+                      <input type="file" class="dropify" name="avatar" data-default-file="<?= $siswa->image ? base_url("upload/img/siswa/$siswa->image") : base_url('assets/img/default/siswa.png') ?>" data-show-remove="false" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" />
                     </div>
                   </div>
                 </div>
