@@ -71,7 +71,7 @@
               <div class="col-lg-3 mt-4 mt-lg-0">
                   <div class="box" data-aos="fade-up" data-aos-delay="600">
                         <img src="img/content/3.jpg" class="img-fluid" alt="">
-                        <h3>3. Pelaksanaan Prakerin <br><small>Sept-Nov 2021</small></h3>
+                        <h3>3. Menjadikan</h3>
                         <p>Siswa melaksanankan kegiatan Prakerin di industri/dibawah pengawasan industri.</p>
                   </div>
               </div>

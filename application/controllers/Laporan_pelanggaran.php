@@ -6,7 +6,10 @@ class Laporan_pelanggaran extends CI_Controller {
     parent::__construct();
 
     if(!$this->session->userdata('login'))
-        redirect('login');        
+        redirect('login');      
+        
+        if($this->session->userdata('level') == 'walikelas')
+        redirect('login');      
     
     $this->load->model('Pelanggaran_Data_model');
   }

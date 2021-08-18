@@ -41,6 +41,7 @@
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
+        <?php if(in_array($this->session->userdata('level'), ['admin', 'kesiswaan'])) : ?>
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
               <div class="dropdown-header">Notifikasi
@@ -66,7 +67,8 @@
                 <a href="javascript:void(0)">Selengkapnya <i class="fas fa-chevron-right"></i></a>
               </div>
             </div>
-          </li>
+        </li>
+        <?php endif; ?>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
               <div class="d-sm-none d-lg-inline-block"><?= $this->session->userdata('nama_user') ?> (<?= $this->session->userdata('level') ?>)</div>
@@ -98,10 +100,14 @@
                   <i class="fas fa-fw fa-plus-circle"></i><span>Entri Pelanggaran</span>
               </a>
             </li>
+            <?php if(in_array($this->session->userdata('level'), ['admin', 'kesiswaan'])) : ?>
             <li>
               <a class="nav-link <?= $this->uri->segment(1) == 'verifikasi_pelanggaran' ? 'text-primary' : '' ?>" href="<?= base_url('Verifikasi_pelanggaran') ?>"><i class="fas fa-check"></i> <span>Verifikasi Pelanggaran</span></a>
             </li>
+            <?php endif; ?>
+            <?php if($this->session->userdata('level') != 'walikelas') : ?>
               <li class="menu-header">Master Data</li>
+              <?php if($this->session->userdata('level') == 'admin') : ?>
                 <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['ptk', 'siswa', 'kelas', 'jurusan', 'tahun']) ? 'active' : '' ?>">
                   <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-database"></i> <span>Data Master</span></a>
                   <ul class="dropdown-menu">
@@ -112,6 +118,7 @@
                     <li><a class="nav-link <?= $this->uri->segment(1) == 'tahun' ? 'text-primary' : '' ?>" href="<?= base_url('Tahun') ?>"><i class="fas fa-calendar"></i> Data Tahun</a></li>
                   </ul>
                 </li>
+              <?php endif; ?>
               <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['pelanggaran', 'jenis_pelanggaran', 'kategori_pelanggaran']) ? 'active' : '' ?>">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-exclamation-triangle"></i> <span>Pelanggaran</span></a>
                 <ul class="dropdown-menu">
@@ -127,10 +134,12 @@
                   <li><a class="nav-link <?= $this->uri->segment(1) == 'kategori_sanksi' ? 'text-primary' : '' ?>" href="<?= base_url('kategori_sanksi') ?>">Kategori Sanksi</a></li>
                 </ul>
               </li>
+              <?php if($this->session->userdata('level') == 'admin') : ?>
                 <li class="menu-header">User Manajemen</li>
                 <li>
                   <a class="nav-link <?= $this->uri->segment(1) == 'user' ? 'text-primary' : '' ?>" href="<?= base_url('user') ?>"><i class="fas fa-user"></i> <span>Pengguna</span></a>
                 </li>
+                <?php endif; ?>
             <li class="menu-header">Laporan</li>
             <li class="nav-item dropdown <?= in_array($this->uri->segment(1), ['laporan_pelanggaran', 'laporan_pelanggaran_siswa', 'laporan_pelanggaran_kelas']) ? 'active' : '' ?>">
               <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-file"></i> <span>Laporan</span></a>
@@ -140,6 +149,8 @@
                 <li><a class="nav-link <?= $this->uri->segment(1) == 'laporan_pelanggaran_kelas' ? 'text-primary' : '' ?>" href="<?= base_url('laporan_pelanggaran_kelas') ?>">Pelanggaran Kelas</a></li>
               </ul>
             </li>
+            <?php endif; ?>
+
           </ul>
         </aside>
       </div>

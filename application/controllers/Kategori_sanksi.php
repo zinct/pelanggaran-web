@@ -7,6 +7,9 @@ class Kategori_sanksi extends CI_Controller {
 
     if(!$this->session->userdata('login'))
 				redirect('login');
+
+        if($this->session->userdata('level') == 'walikelas')
+        redirect('login');      
   }
 
   public function index(){

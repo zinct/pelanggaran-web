@@ -6,7 +6,10 @@ class Verifikasi_pelanggaran extends CI_Controller {
     parent::__construct();
 
     if(!$this->session->userdata('login'))
-				redirect('login');
+      redirect('login');
+      
+    if(!in_array($this->session->userdata('level'), ['admin', 'kesiswaan']))
+      redirect('dashboard');
 
     $this->load->model('Siswa_model');
     $this->load->model('Pelanggaran_data_model');

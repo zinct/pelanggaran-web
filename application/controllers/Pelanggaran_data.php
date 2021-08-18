@@ -8,6 +8,12 @@ class Pelanggaran_data extends CI_Controller {
 
     if(!$this->session->userdata('login'))
 				redirect('login');
+
+        if($this->session->userdata('level') == 'walikelas')
+        redirect('login');      
+
+        if($this->session->userdata('level') == 'bk')
+        redirect('login');      
   }
 
   public function index(){

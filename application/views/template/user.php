@@ -43,7 +43,7 @@
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
       <a href="#" class="logo d-flex align-items-center">
-        <span>Simpra</span>
+        <span>SIMPEl</span>
       </a>
 
       <nav id="navbar" class="navbar">

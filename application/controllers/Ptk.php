@@ -7,7 +7,7 @@ class Ptk extends CI_Controller {
 
     if(!$this->session->userdata('login'))
 				redirect('login');
-        
+
         $this->load->model('Ptk_model');
       }
       
