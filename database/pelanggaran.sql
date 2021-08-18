@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 01, 2021 at 12:36 PM
+-- Generation Time: Aug 18, 2021 at 08:24 PM
 -- Server version: 8.0.26-0ubuntu0.20.04.2
 -- PHP Version: 7.4.3
 
@@ -164,13 +164,13 @@ CREATE TABLE `kelas` (
 INSERT INTO `kelas` (`id_kelas`, `nama_kelas`, `tingkat`, `id_jurusan`, `id_tahun`) VALUES
 (6, 'XII RPL 1', '12', 5, 3),
 (7, 'XII RPL 2', '12', 5, 3),
-(8, 'XII RPL 3', '12', 5, 3),
-(9, 'XII RPL 4', '12', 5, 3),
+(8, 'XII RPL 3', '10', 5, 3),
+(9, 'XI RPL 4', '12', 5, 3),
 (10, 'XII RPL 5', '12', 5, 3),
 (11, 'XII AKT 1', '12', 1, 3),
 (12, 'XII AKT 2', '12', 1, 3),
 (13, 'XII AKT 3', '12', 1, 3),
-(14, 'XII AKT 4', '12', 1, 3),
+(14, 'XII AKT 4', '11', 1, 3),
 (15, 'XII DKV 1', '12', 4, 3),
 (16, 'XII DKV 2', '12', 4, 3),
 (17, 'XII ANM', '12', 2, 3),
@@ -194,8 +194,14 @@ CREATE TABLE `kelas_siswa` (
 
 INSERT INTO `kelas_siswa` (`id_kelas_siswa`, `id_kelas`, `id_siswa`) VALUES
 (7, 14, 2),
-(8, 9, 1),
-(9, 9, 3);
+(12, 8, 1),
+(13, 9, 3),
+(14, 9, 21),
+(15, 9, 22),
+(16, 9, 23),
+(17, 9, 24),
+(18, 9, 25),
+(19, 9, 26);
 
 -- --------------------------------------------------------
 
@@ -288,6 +294,7 @@ CREATE TABLE `pelanggaran_data` (
   `id_pelanggaran_data` int NOT NULL,
   `id_pelanggaran` int NOT NULL,
   `id_siswa` int NOT NULL,
+  `id_kelas` int NOT NULL,
   `id_ptk` int NOT NULL,
   `tgl` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `poin` int DEFAULT NULL,
@@ -301,13 +308,14 @@ CREATE TABLE `pelanggaran_data` (
 -- Dumping data for table `pelanggaran_data`
 --
 
-INSERT INTO `pelanggaran_data` (`id_pelanggaran_data`, `id_pelanggaran`, `id_siswa`, `id_ptk`, `tgl`, `poin`, `catatan`, `id_tahun`, `id_sanksi`, `status`) VALUES
-(1, 59, 1, 7, '2021-06-08 12:33:02', 15, 'Dilarang ada jamet di sekolah ini!', 3, 3, 'Disetujui'),
-(2, 35, 2, 7, '2021-07-01 12:31:06', 2, 'Jalanan macet soalnya rumah di sumedang', 3, 1, 'Disetujui'),
-(3, 32, 3, 7, '2021-07-01 12:32:09', 75, 'Terjadi Baku hantam', 3, 9, 'Disetujui'),
-(4, 47, 1, 7, '2021-12-01 12:34:27', 5, '', 3, 1, 'Disetujui'),
-(5, 35, 1, 7, '2021-04-01 12:33:04', 2, '', 3, 1, 'Disetujui'),
-(6, 50, 3, 7, '2021-08-01 12:33:25', 5, '', 3, 1, 'Disetujui');
+INSERT INTO `pelanggaran_data` (`id_pelanggaran_data`, `id_pelanggaran`, `id_siswa`, `id_kelas`, `id_ptk`, `tgl`, `poin`, `catatan`, `id_tahun`, `id_sanksi`, `status`) VALUES
+(1, 59, 1, 8, 12, '2021-08-17 21:32:32', 15, 'Dilarang ada jamet di sekolah ini!', 3, 3, 'Disetujui'),
+(2, 35, 2, 14, 12, '2021-08-17 21:32:34', 2, 'Jalanan macet soalnya rumah di sumedang', 3, 1, 'Disetujui'),
+(3, 32, 3, 8, 12, '2021-08-17 21:32:35', 75, 'Terjadi Baku hantam', 3, 9, 'Disetujui'),
+(4, 47, 1, 9, 12, '2021-08-17 21:32:36', 5, '', 3, 1, 'Disetujui'),
+(5, 35, 1, 9, 12, '2021-08-17 21:32:37', 2, '', 3, 1, 'Disetujui'),
+(6, 50, 3, 9, 12, '2021-08-17 21:32:38', 5, '', 3, 1, 'Disetujui'),
+(7, 2, 2, 14, 12, '2021-08-17 21:32:41', 10, 'ada', 3, 3, 'Disetujui');
 
 -- --------------------------------------------------------
 
@@ -317,24 +325,158 @@ INSERT INTO `pelanggaran_data` (`id_pelanggaran_data`, `id_pelanggaran`, `id_sis
 
 CREATE TABLE `ptk` (
   `id_ptk` int NOT NULL,
-  `nama_ptk` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL
+  `nama_ptk` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `nipy` varchar(255) NOT NULL,
+  `jk` enum('L','P') NOT NULL,
+  `tempat_lahir` varchar(255) NOT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
+  `telp` varchar(255) NOT NULL,
+  `alamat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `ptk`
 --
 
-INSERT INTO `ptk` (`id_ptk`, `nama_ptk`) VALUES
-(1, 'SUPRIATNA, M.Pd\r'),
-(2, 'DENI IRAWAN, S.Pd.I\r'),
-(3, 'ELINA APIANI, A.Md\r'),
-(4, 'IIS SABIAH, S.Pd., M.Hum\r'),
-(5, 'SLAMET RIYADI, S.T\r'),
-(6, 'MONI MORITHA ZELLY, M.Pd,'),
-(7, 'Asep Ramdani'),
-(8, 'Fazrin Tauvan, S.Psi.'),
-(9, 'ASHIAP'),
-(10, 'asd');
+INSERT INTO `ptk` (`id_ptk`, `nama_ptk`, `image`, `nipy`, `jk`, `tempat_lahir`, `tanggal_lahir`, `telp`, `alamat`) VALUES
+(12, 'Abdul Manap, S.S.', NULL, '17071002010', 'L', 'TASIKMALAYA', '1980-01-16', '085220413422l', 'Kp. Talun'),
+(13, 'Ade Suryani, S.Pd.', NULL, '16070802009', 'P', 'BANDUNG', '1980-01-16', '85624087160', 'Sindangsari'),
+(14, 'Ajeng Susanti, S.Pd.', NULL, '15071702001', 'P', 'BANDUNG', '1980-01-16', '081214817606', 'Kp. Cihaur'),
+(15, 'Aji Sukma Kusumah, S.T.', NULL, '17071002002', 'L', 'BANDUNG', '1980-01-16', '85294049154', 'Gg. Sukamulya II/No. 22'),
+(16, 'ALI MUCHSIN', NULL, '16071602004', 'L', 'BANDUNG', '1980-01-16', '081321274942', 'Kp, Cikalang'),
+(17, 'Anna Nugrohowati, S.Pd.', NULL, '11071502007', 'P', 'BANDUNG', '1980-01-16', '08980019015', 'Komplek Cibiru Asri Blok D2 No 14'),
+(18, 'Anton Mulyana, S.Sos.', NULL, '16070902002', 'L', 'BANDUNG', '1980-01-16', '085794556436', 'Komp. Neglasari I Jl. Neglawarna No. 21'),
+(19, 'ASEP HERMAN N', NULL, '15071902002', 'L', 'GARUT', '1980-01-16', '085795331159', 'Komp. Bukit Mekar H24'),
+(20, 'Asep Kuat Hidayatulloh, S.Pd.', NULL, '09071202006', 'L', 'BANDUNG', '1980-01-16', '85317974762', 'Jl. Paledang No. 230'),
+(21, 'Asep Ramdani, S.Kom.', NULL, '11071502015', 'L', 'BANDUNG', '1980-01-16', '089694918806', 'Kp. Sayang Tengah'),
+(22, 'Asep Rudi Nurjaman, S.Pd., M.Pd.I.', NULL, '17071002003', 'L', 'GARUT', '1980-01-16', '85624366522', 'Kp. Babakan Dangdeur'),
+(23, 'Dr.Asep Totoh, S.E., M.M.', NULL, '16070702001', 'L', 'BANDUNG', '1980-01-16', '085294977857/081', 'Jl. Rancakihiang 01/08'),
+(24, 'DANI WARDANI, S.Hum., M.Pd.', NULL, '16070902001', 'L', 'BANDUNG', '1980-01-16', '08562300867', 'KOMPLEK GRIYA PURWA ASRI H.3'),
+(25, 'Dedi Junaedi, S.Ag.', NULL, '16070902003', 'L', 'SUBANG', '1980-01-16', '81394468382', 'Jl. Cileunyi'),
+(26, 'Deni Danis Suara, S.T., M.Kom.', NULL, '16070802001', 'L', 'BANDUNG', '1980-01-16', '81220355277', 'Panuusan'),
+(27, 'Deni Irawan, S.Pd.I.', NULL, '11071502002', 'L', 'GARUT', '1980-01-16', '085793463031', 'Kp. Babakan Sukamulya'),
+(28, 'Dewi Kurnia, S.Pd.', NULL, '11071502005', 'P', 'BANDUNG', '1980-01-16', '085793072298', 'Gang Kujang No. 99'),
+(29, 'Dian Catur Oktania, S.Pd.', NULL, '12071003022', 'P', 'BANDUNG', '1980-01-16', '85722980089', 'Jl. Lembah Pakar Timur No. 29'),
+(30, 'Dra. Dindin Muldianah', NULL, '16070702003', 'P', 'BANDUNG', '1980-01-16', '81221044467', 'Komp. Neglasari H.11/26'),
+(31, 'Dini Susanti, S.Pd.,M.M.', NULL, '09071202007', 'P', 'BANDUNG', '1980-01-16', '85722451774', 'Komp. Mutiara venue No. MR10'),
+(32, 'Elina Apiani, A.Md.', NULL, '11071502006', 'P', 'BANDUNG', '1980-01-16', '089674051132', 'Kp. Rancapanjang'),
+(33, 'Enjen Abdul Zaeni, S.H.I., M.Pd.I.', NULL, '16070702004', 'L', 'SUKABUMI', '1980-01-16', '81322800873', 'Jl. Ciporeat Gg. Mandala 2 No.19'),
+(34, 'Fathoni Hidayah, S.Sn.', NULL, '11071502014', 'L', 'BANDUNG', '1980-01-16', '08986933514', 'Bojongsoan'),
+(35, 'Fazrin Tauvan Hidayatuloh, S.Ps.I., M.Pd.', NULL, '11071502003', 'L', 'TASIKMALAYA', '1980-01-16', '085624051542', 'Kp. Cijawer'),
+(36, 'Fidmawan Hadriastika D. M., M.Pd.', NULL, '15071303034', 'L', 'BANDUNG', '1980-01-16', '085720486030', 'Jl. Rancakihiang'),
+(37, 'Frian Prianas, S.T.', NULL, '16070802003', 'L', 'BANDUNG', '1980-01-16', '85221578778', 'Jl. Babakan Teureup No. 07'),
+(38, 'Gatot Taofik, S.Pd.', NULL, '09071202008', 'L', 'BANDUNG', '1980-01-16', '08976630041', 'Kp. Citeureup'),
+(39, 'Gilang Satria Dirgantara, S.Pd.', NULL, '16070902005', 'L', 'BANDUNG', '1980-01-16', '81320360300', 'Jl. Pasir Impun Barat No. 66'),
+(40, 'Gita Maharani, S.Pd.', NULL, '09071202004', 'P', 'BANDUNG', '1980-01-16', '85222742633', 'Jl. Cikuda No.45'),
+(41, 'Handi Radiman, S.Tr.Sn.', NULL, '15071702006', 'L', 'BANDUNG', '1980-01-16', '085722832111', 'Kp. Cangkring'),
+(42, 'Hurip Permana, S.T', NULL, '16070702002', 'L', 'BANDUNG', '1980-01-16', '85221926928', 'Kp. Mandalawangi No. 09'),
+(43, 'Iis Sabiah,S.I.Kom., S.Pd., M.Hum.', NULL, '16070902006', 'P', 'BOGOR', '1980-01-16', '085218176607', 'Bukit Permata B26B Karsamanik'),
+(44, 'Ilham Zhafir Fadilah, S.Kom.', NULL, '11071502013', 'L', 'BANDUNG', '1980-01-16', '087722728570', 'Komp. Rancaindah Blok A1 No. 10'),
+(45, 'Indri Destiany, S.Pd.', NULL, '09071302003', 'P', 'BANDUNG', '1980-01-16', '085220088396', 'Jl. Kopo No. 21 Gg. Babakan Rahayu'),
+(46, 'Intan Siti Muharomah, S.Pd.', NULL, '16071602001', 'P', 'BANDUNG', '1980-01-16', '081947264305', 'Jl. Cigending Gang Janaka 2'),
+(47, 'Iwan Syarif Hidayat, S.Pd.', NULL, '09071402002', 'L', 'BANDUNG', '1980-01-16', '081320240260', 'Kp. Cihaur'),
+(48, 'Juli Rahmawanto, M.Pd.', NULL, '16070902008', 'L', 'BANYUWANGI', '1980-01-16', '081238524505', 'Jl. Sekeloa Tengah No. 50/152 C'),
+(49, 'Juwita Siti Nurlaeli, S.Pd.', NULL, '15071702002', 'P', 'BANDUNG', '1980-01-16', '081313420013', 'Kp. Cihaur'),
+(50, 'Kania Rachmawati, S.Ag.', NULL, '17071002007', 'P', 'BANDUNG', '1980-01-16', '02291148447', 'JL. GOLF NO 10'),
+(51, 'Kokom Komalasari, S.Pd.', NULL, '12071003017', 'P', 'SUMEDANG', '1980-01-16', '85722154266', 'Dangdeur'),
+(52, 'Linda Yudani, S.P.', NULL, '17071002008', 'P', 'BANDUNG', '1980-01-16', '085294357232', 'Jl. Anyelir V No. 49 RAN'),
+(53, 'M. PRAKARSA AL-QADR SALEH, S.T., S.Kom., M.Kom.', NULL, '16070802011', 'L', 'BANDUNG', '1980-01-16', '085624106489', 'KOMPLEK PANGHEGAR '),
+(54, 'Maksum Efendi, S.Pd.I.', NULL, '11071502001', 'L', 'BATUJAJAR', '1980-01-16', '085222287008', 'Madalangu'),
+(55, 'Meti Karlina, S.E.', NULL, '11071502004', 'P', 'SUMEDANG', '1980-01-16', '089639013709', 'Lingga Jaya'),
+(56, 'MOCHAMMAD JUHAERI, S.Pd.', NULL, '14071802001', 'L', 'BANDUNG', '1980-01-16', '082219401336', 'Kp. Cipeundeuy'),
+(57, 'Moni Moritha Zelly, M.Pd.', NULL, '09071402003', 'P', 'BANDUNG', '1980-01-16', '085321480339', 'Komp. Puri Adi Prima Blok B1 No. 12A'),
+(58, 'N. Yani Suryani, S.Pd.', NULL, '16070802005', 'P', 'BANDUNG', '1980-01-16', '085314843027', 'Komp. Binakarya I No. 102 Blok E'),
+(59, 'Nadili Supena, S.Ag.', NULL, '16070902009', 'L', 'TASIKMALAYA', '1980-01-16', '8987942908', 'Komp. Bukit Mekar H24'),
+(60, 'NASIRRUDIN, S.Ag', NULL, '15071702005', 'L', 'MAJALENGKA', '1980-01-16', '089656723688', 'JL.SUKAHAJI'),
+(61, 'Neni Septilia, S.Pd.', NULL, '15071303028', 'P', 'LAMPUNG', '1980-01-16', '085721339300', 'Jl. Neglasari No. 21'),
+(62, 'Prayoga Eka Chandra, S.T.', NULL, '16070902011', 'L', 'BANDUNG', '1980-01-16', '85221983602', 'Komp. Pasir Jati'),
+(63, 'Radea Sumbada, S.Pd.', NULL, '17071002005', 'L', 'BANDUNG', '1980-01-16', '85222624231', 'Kp. Citeureup'),
+(64, 'RAHAYU DALYANTI, S.Pd.,M.Ak.', NULL, '15071702010', 'P', 'JAKARTA', '1980-01-16', '081902643137', 'Kp.Lio'),
+(65, 'Ridwan Shidiq, S.Pd.', NULL, '16071602003', 'L', 'GARUT', '1980-01-16', '085721065666', 'Komp. Permata Biru Blok A. No 55'),
+(66, 'RIDWAN SETIAWAN, S.Kom.I., M.SOS.', NULL, '15071902001', 'L', 'GARUT', '1980-01-16', '085723750929', 'Kp.Kadungora'),
+(67, 'Rima Permata Ellya, S.Pd.', NULL, '11071502017', 'P', 'Bandung', '1980-01-16', '082214470058', 'Anyelir 1 Jl. Teratai VI'),
+(68, 'Rio Andrianto, S.Kom.', NULL, '18071102003', 'L', 'BANDUNG', '1980-01-16', '81220489806', 'Jl. Panembakan No. 105'),
+(69, 'Robingah, S,Pd.', NULL, '16071602002', 'P', 'CILACAP', '1980-01-16', '085795203005', 'Perum Bumi Abdi Ngara Blok D5 No 14'),
+(70, 'Saepudin, S.T.', NULL, '11071502009', 'L', 'CIANJUR', '1980-01-16', '085722706533', 'Komp. Riung Duta Blok G No. 14'),
+(71, 'SALMA FAUZIAH, S.Psi.', NULL, '14072002001', 'P', 'KARAWANG', '1980-01-16', '082116291591', 'Perum Puri Kosambi Blok NN/30,'),
+(72, 'Sandra Irawan, S.Pd.', NULL, '17071002023', 'L', 'BANDUNG', '1980-01-16', '0895606531286', 'Jl. Sindang Laya No. 21'),
+(73, 'Slamet Riyadi, S.T.', NULL, '16070802006', 'L', 'BANDUNG', '1980-01-16', '87822628415', 'Kp. Bantarsari'),
+(74, 'Sony Syaupala, S.T.', NULL, '17071002001', 'L', 'BANDUNG', '1980-01-16', '85659142939', 'Jl. Giri Mayang No. 5 Komp. Simpay Asih'),
+(75, 'Suhendar, S.Pd.I., M.Pd.', NULL, '18071102002', 'L', 'TASIKMALAYA', '1980-01-16', '85624290547', 'Kp. Cengkar'),
+(76, 'Supriatna, M.Pd.', NULL, '16070902007', 'L', 'GARUT', '1980-01-16', '081221075502', 'Komp. Mekar Bakti Village Blok D No. 75'),
+(77, 'Syarif Hidayat, S.Ag., M.Pd.I.', NULL, '17071002009', 'L', 'BANDUNG', '1980-01-16', '081214820280', 'Jl. KARANG ANYAR 2 NO. 42'),
+(78, 'Tri Dewi Ismayanti, S.Pd.', NULL, '16070802007', 'P', 'BANDUNG', '1980-01-16', '085720517336', 'Jl. Anyelir V No. 49 Bumi Rancaekek Kencana'),
+(79, 'Wahyu Setiyanto,S.Pd.', NULL, '16071602004', 'L', 'BANDUNG', '1980-01-16', '08562121984', 'Jl. Bakung I No.34 Rt.02/10'),
+(80, 'Abdul Manap, S.S.', NULL, '17071002010', 'L', 'TASIKMALAYA', '1980-01-16', '085220413422', 'Kp. Talun'),
+(81, 'Ade Suryani, S.Pd.', NULL, '16070802009', 'P', 'BANDUNG', '1980-01-16', '85624087160', 'Sindangsari'),
+(82, 'Ajeng Susanti, S.Pd.', NULL, '15071702001', 'P', 'BANDUNG', '1980-01-16', '081214817606', 'Kp. Cihaur'),
+(83, 'Aji Sukma Kusumah, S.T.', NULL, '17071002002', 'L', 'BANDUNG', '1980-01-16', '85294049154', 'Gg. Sukamulya II/No. 22'),
+(84, 'ALI MUCHSIN', NULL, '16071602004', 'L', 'BANDUNG', '1980-01-16', '081321274942', 'Kp, Cikalang'),
+(85, 'Anna Nugrohowati, S.Pd.', NULL, '11071502007', 'P', 'BANDUNG', '1980-01-16', '08980019015', 'Komplek Cibiru Asri Blok D2 No 14'),
+(86, 'Anton Mulyana, S.Sos.', NULL, '16070902002', 'L', 'BANDUNG', '1980-01-16', '085794556436', 'Komp. Neglasari I Jl. Neglawarna No. 21'),
+(87, 'ASEP HERMAN N', NULL, '15071902002', 'L', 'GARUT', '1980-01-16', '085795331159', 'Komp. Bukit Mekar H24'),
+(88, 'Asep Kuat Hidayatulloh, S.Pd.', NULL, '09071202006', 'L', 'BANDUNG', '1980-01-16', '85317974762', 'Jl. Paledang No. 230'),
+(89, 'Asep Ramdani, S.Kom.', NULL, '11071502015', 'L', 'BANDUNG', '1980-01-16', '089694918806', 'Kp. Sayang Tengah'),
+(90, 'Asep Rudi Nurjaman, S.Pd., M.Pd.I.', NULL, '17071002003', 'L', 'GARUT', '1980-01-16', '85624366522', 'Kp. Babakan Dangdeur'),
+(91, 'Dr.Asep Totoh, S.E., M.M.', NULL, '16070702001', 'L', 'BANDUNG', '1980-01-16', '085294977857/081', 'Jl. Rancakihiang 01/08'),
+(92, 'DANI WARDANI, S.Hum., M.Pd.', NULL, '16070902001', 'L', 'BANDUNG', '1980-01-16', '08562300867', 'KOMPLEK GRIYA PURWA ASRI H.3'),
+(93, 'Dedi Junaedi, S.Ag.', NULL, '16070902003', 'L', 'SUBANG', '1980-01-16', '81394468382', 'Jl. Cileunyi'),
+(94, 'Deni Danis Suara, S.T., M.Kom.', NULL, '16070802001', 'L', 'BANDUNG', '1980-01-16', '81220355277', 'Panuusan'),
+(95, 'Deni Irawan, S.Pd.I.', NULL, '11071502002', 'L', 'GARUT', '1980-01-16', '085793463031', 'Kp. Babakan Sukamulya'),
+(96, 'Dewi Kurnia, S.Pd.', NULL, '11071502005', 'P', 'BANDUNG', '1980-01-16', '085793072298', 'Gang Kujang No. 99'),
+(97, 'Dian Catur Oktania, S.Pd.', NULL, '12071003022', 'P', 'BANDUNG', '1980-01-16', '85722980089', 'Jl. Lembah Pakar Timur No. 29'),
+(98, 'Dra. Dindin Muldianah', NULL, '16070702003', 'P', 'BANDUNG', '1980-01-16', '81221044467', 'Komp. Neglasari H.11/26'),
+(99, 'Dini Susanti, S.Pd.,M.M.', NULL, '09071202007', 'P', 'BANDUNG', '1980-01-16', '85722451774', 'Komp. Mutiara venue No. MR10'),
+(100, 'Elina Apiani, A.Md.', NULL, '11071502006', 'P', 'BANDUNG', '1980-01-16', '089674051132', 'Kp. Rancapanjang'),
+(101, 'Enjen Abdul Zaeni, S.H.I., M.Pd.I.', NULL, '16070702004', 'L', 'SUKABUMI', '1980-01-16', '81322800873', 'Jl. Ciporeat Gg. Mandala 2 No.19'),
+(102, 'Fathoni Hidayah, S.Sn.', NULL, '11071502014', 'L', 'BANDUNG', '1980-01-16', '08986933514', 'Bojongsoan'),
+(103, 'Fazrin Tauvan Hidayatuloh, S.Ps.I., M.Pd.', NULL, '11071502003', 'L', 'TASIKMALAYA', '1980-01-16', '085624051542', 'Kp. Cijawer'),
+(104, 'Fidmawan Hadriastika D. M., M.Pd.', NULL, '15071303034', 'L', 'BANDUNG', '1980-01-16', '085720486030', 'Jl. Rancakihiang'),
+(105, 'Frian Prianas, S.T.', NULL, '16070802003', 'L', 'BANDUNG', '1980-01-16', '85221578778', 'Jl. Babakan Teureup No. 07'),
+(106, 'Gatot Taofik, S.Pd.', NULL, '09071202008', 'L', 'BANDUNG', '1980-01-16', '08976630041', 'Kp. Citeureup'),
+(107, 'Gilang Satria Dirgantara, S.Pd.', NULL, '16070902005', 'L', 'BANDUNG', '1980-01-16', '81320360300', 'Jl. Pasir Impun Barat No. 66'),
+(108, 'Gita Maharani, S.Pd.', NULL, '09071202004', 'P', 'BANDUNG', '1980-01-16', '85222742633', 'Jl. Cikuda No.45'),
+(109, 'Handi Radiman, S.Tr.Sn.', NULL, '15071702006', 'L', 'BANDUNG', '1980-01-16', '085722832111', 'Kp. Cangkring'),
+(110, 'Hurip Permana, S.T', NULL, '16070702002', 'L', 'BANDUNG', '1980-01-16', '85221926928', 'Kp. Mandalawangi No. 09'),
+(111, 'Iis Sabiah,S.I.Kom., S.Pd., M.Hum.', NULL, '16070902006', 'P', 'BOGOR', '1980-01-16', '085218176607', 'Bukit Permata B26B Karsamanik'),
+(112, 'Ilham Zhafir Fadilah, S.Kom.', NULL, '11071502013', 'L', 'BANDUNG', '1980-01-16', '087722728570', 'Komp. Rancaindah Blok A1 No. 10'),
+(113, 'Indri Destiany, S.Pd.', NULL, '09071302003', 'P', 'BANDUNG', '1980-01-16', '085220088396', 'Jl. Kopo No. 21 Gg. Babakan Rahayu'),
+(114, 'Intan Siti Muharomah, S.Pd.', NULL, '16071602001', 'P', 'BANDUNG', '1980-01-16', '081947264305', 'Jl. Cigending Gang Janaka 2'),
+(115, 'Iwan Syarif Hidayat, S.Pd.', NULL, '09071402002', 'L', 'BANDUNG', '1980-01-16', '081320240260', 'Kp. Cihaur'),
+(116, 'Juli Rahmawanto, M.Pd.', NULL, '16070902008', 'L', 'BANYUWANGI', '1980-01-16', '081238524505', 'Jl. Sekeloa Tengah No. 50/152 C'),
+(117, 'Juwita Siti Nurlaeli, S.Pd.', NULL, '15071702002', 'P', 'BANDUNG', '1980-01-16', '081313420013', 'Kp. Cihaur'),
+(118, 'Kania Rachmawati, S.Ag.', NULL, '17071002007', 'P', 'BANDUNG', '1980-01-16', '02291148447', 'JL. GOLF NO 10'),
+(119, 'Kokom Komalasari, S.Pd.', NULL, '12071003017', 'P', 'SUMEDANG', '1980-01-16', '85722154266', 'Dangdeur'),
+(120, 'Linda Yudani, S.P.', NULL, '17071002008', 'P', 'BANDUNG', '1980-01-16', '085294357232', 'Jl. Anyelir V No. 49 RAN'),
+(121, 'M. PRAKARSA AL-QADR SALEH, S.T., S.Kom., M.Kom.', NULL, '16070802011', 'L', 'BANDUNG', '1980-01-16', '085624106489', 'KOMPLEK PANGHEGAR '),
+(122, 'Maksum Efendi, S.Pd.I.', NULL, '11071502001', 'L', 'BATUJAJAR', '1980-01-16', '085222287008', 'Madalangu'),
+(123, 'Meti Karlina, S.E.', NULL, '11071502004', 'P', 'SUMEDANG', '1980-01-16', '089639013709', 'Lingga Jaya'),
+(124, 'MOCHAMMAD JUHAERI, S.Pd.', NULL, '14071802001', 'L', 'BANDUNG', '1980-01-16', '082219401336', 'Kp. Cipeundeuy'),
+(125, 'Moni Moritha Zelly, M.Pd.', NULL, '09071402003', 'P', 'BANDUNG', '1980-01-16', '085321480339', 'Komp. Puri Adi Prima Blok B1 No. 12A'),
+(126, 'N. Yani Suryani, S.Pd.', NULL, '16070802005', 'P', 'BANDUNG', '1980-01-16', '085314843027', 'Komp. Binakarya I No. 102 Blok E'),
+(127, 'Nadili Supena, S.Ag.', NULL, '16070902009', 'L', 'TASIKMALAYA', '1980-01-16', '8987942908', 'Komp. Bukit Mekar H24'),
+(128, 'NASIRRUDIN, S.Ag', NULL, '15071702005', 'L', 'MAJALENGKA', '1980-01-16', '089656723688', 'JL.SUKAHAJI'),
+(129, 'Neni Septilia, S.Pd.', NULL, '15071303028', 'P', 'LAMPUNG', '1980-01-16', '085721339300', 'Jl. Neglasari No. 21'),
+(130, 'Prayoga Eka Chandra, S.T.', NULL, '16070902011', 'L', 'BANDUNG', '1980-01-16', '85221983602', 'Komp. Pasir Jati'),
+(131, 'Radea Sumbada, S.Pd.', NULL, '17071002005', 'L', 'BANDUNG', '1980-01-16', '85222624231', 'Kp. Citeureup'),
+(132, 'RAHAYU DALYANTI, S.Pd.,M.Ak.', NULL, '15071702010', 'P', 'JAKARTA', '1980-01-16', '081902643137', 'Kp.Lio'),
+(133, 'Ridwan Shidiq, S.Pd.', NULL, '16071602003', 'L', 'GARUT', '1980-01-16', '085721065666', 'Komp. Permata Biru Blok A. No 55'),
+(134, 'RIDWAN SETIAWAN, S.Kom.I., M.SOS.', NULL, '15071902001', 'L', 'GARUT', '1980-01-16', '085723750929', 'Kp.Kadungora'),
+(135, 'Rima Permata Ellya, S.Pd.', NULL, '11071502017', 'P', 'Bandung', '1980-01-16', '082214470058', 'Anyelir 1 Jl. Teratai VI'),
+(136, 'Rio Andrianto, S.Kom.', NULL, '18071102003', 'L', 'BANDUNG', '1980-01-16', '81220489806', 'Jl. Panembakan No. 105'),
+(137, 'Robingah, S,Pd.', NULL, '16071602002', 'P', 'CILACAP', '1980-01-16', '085795203005', 'Perum Bumi Abdi Ngara Blok D5 No 14'),
+(138, 'Saepudin, S.T.', NULL, '11071502009', 'L', 'CIANJUR', '1980-01-16', '085722706533', 'Komp. Riung Duta Blok G No. 14'),
+(139, 'SALMA FAUZIAH, S.Psi.', NULL, '14072002001', 'P', 'KARAWANG', '1980-01-16', '082116291591', 'Perum Puri Kosambi Blok NN/30,'),
+(140, 'Sandra Irawan, S.Pd.', NULL, '17071002023', 'L', 'BANDUNG', '1980-01-16', '0895606531286', 'Jl. Sindang Laya No. 21'),
+(141, 'Slamet Riyadi, S.T.', NULL, '16070802006', 'L', 'BANDUNG', '1980-01-16', '87822628415', 'Kp. Bantarsari'),
+(142, 'Sony Syaupala, S.T.', NULL, '17071002001', 'L', 'BANDUNG', '1980-01-16', '85659142939', 'Jl. Giri Mayang No. 5 Komp. Simpay Asih'),
+(143, 'Suhendar, S.Pd.I., M.Pd.', NULL, '18071102002', 'L', 'TASIKMALAYA', '1980-01-16', '85624290547', 'Kp. Cengkar'),
+(144, 'Supriatna, M.Pd.', NULL, '16070902007', 'L', 'GARUT', '1980-01-16', '081221075502', 'Komp. Mekar Bakti Village Blok D No. 75'),
+(145, 'Syarif Hidayat, S.Ag., M.Pd.I.', NULL, '17071002009', 'L', 'BANDUNG', '1980-01-16', '081214820280', 'Jl. KARANG ANYAR 2 NO. 42'),
+(146, 'Tri Dewi Ismayanti, S.Pd.', NULL, '16070802007', 'P', 'BANDUNG', '1980-01-16', '085720517336', 'Jl. Anyelir V No. 49 Bumi Rancaekek Kencana'),
+(147, 'Wahyu Setiyanto,S.Pd.', NULL, '16071602004', 'L', 'BANDUNG', '1980-01-16', '08562121984', 'Jl. Bakung I No.34 Rt.02/10'),
+(150, 'asfasf', '56570057.jpeg', 'afsf', 'P', 'asfasf', '2021-08-27', 'asfsa', 'fasf');
 
 -- --------------------------------------------------------
 
@@ -376,6 +518,7 @@ CREATE TABLE `siswa` (
   `id_siswa` int NOT NULL,
   `nis` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `nama_siswa` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `jenis_kelamin` enum('L','P') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `tempat_lahir` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `tanggal_lahir` date NOT NULL,
@@ -390,10 +533,11 @@ CREATE TABLE `siswa` (
 -- Dumping data for table `siswa`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nis`, `nama_siswa`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `telp`, `keterangan`, `password`, `status`) VALUES
-(1, '181912070084', 'Indra Mahesa', 'L', 'Bandung', '2021-08-01', 'Cibiru, Komp Bumi Harapan blok cc 3 no 10', '081234567891', '', '$2y$10$4tnjCZfoKB25s0KrUG59rObIMCGVu6Xe7QXj9nA20EMfqBr36aewO', 1),
-(2, '181912070085', 'Nita Oktapiani', 'P', 'Sumedang', '2021-08-01', 'Sumedang, Taman bukit makmur', '081234567891', NULL, '$2y$10$/PCLyz72ia32Q4bx3elJueZfs/5pXr3a3MdsyhSHaToIF.YZ96Pxy', 1),
-(3, '181912070086', 'David Fadlillah', 'L', 'Bandung', '2021-08-01', 'Cileunyi', '081234567891', 'Memiliki penyakit hati', '$2y$10$1u/MCHiEL.nYNS2VwIYs2etgvQZozQSQw2vfvJkHNMdJ52HKyjOau', 1);
+INSERT INTO `siswa` (`id_siswa`, `nis`, `nama_siswa`, `image`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `alamat`, `telp`, `keterangan`, `password`, `status`) VALUES
+(1, '181912070084', 'Indra Mahesa', NULL, 'L', 'Bandung', '2021-08-01', 'Cibiru, Komp Bumi Harapan blok cc 3 no 10', '081234567891', '', '$2y$10$4tnjCZfoKB25s0KrUG59rObIMCGVu6Xe7QXj9nA20EMfqBr36aewO', 1),
+(2, '181912070085', 'Nita Oktapiani', NULL, 'P', 'Sumedang', '2021-08-01', 'Sumedang, Taman bukit makmur', '081234567891', '', '$2y$10$/PCLyz72ia32Q4bx3elJueZfs/5pXr3a3MdsyhSHaToIF.YZ96Pxy', 1),
+(3, '181912070086', 'David Fadlillah', NULL, 'L', 'Bandung', '2021-08-01', 'Cileunyi', '081234567891', 'Memiliki penyakit hati', '$2y$10$1u/MCHiEL.nYNS2VwIYs2etgvQZozQSQw2vfvJkHNMdJ52HKyjOau', 1),
+(26, '181912070087', 'Tes Foto', NULL, 'P', 'dsf', '2021-08-24', 'sdfsd', 'fsf', 'sdf', '$2y$10$nmJqS04Z3QhxAxWnIjeg2.XsBelaiPcRTPw2hhHFUVjY.EEbIl2F.', 1);
 
 -- --------------------------------------------------------
 
@@ -435,7 +579,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `level`, `id_ref`) VALUES
-(1, 'admin', '$2y$10$Zd3ej2ecBoE/8HxbHZQlDOm9cfWruDdZHFjYpG6eZftf8QHdWD.W2', 'admin', 7);
+(1, 'admin', '$2y$10$Zd3ej2ecBoE/8HxbHZQlDOm9cfWruDdZHFjYpG6eZftf8QHdWD.W2', 'admin', 21);
 
 -- --------------------------------------------------------
 
@@ -597,7 +741,7 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `kelas_siswa`
 --
 ALTER TABLE `kelas_siswa`
-  MODIFY `id_kelas_siswa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_kelas_siswa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `pelanggaran`
@@ -609,13 +753,13 @@ ALTER TABLE `pelanggaran`
 -- AUTO_INCREMENT for table `pelanggaran_data`
 --
 ALTER TABLE `pelanggaran_data`
-  MODIFY `id_pelanggaran_data` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_pelanggaran_data` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ptk`
 --
 ALTER TABLE `ptk`
-  MODIFY `id_ptk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_ptk` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
 -- AUTO_INCREMENT for table `sanksi`
@@ -627,7 +771,7 @@ ALTER TABLE `sanksi`
 -- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_siswa` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tahun`
