@@ -40,7 +40,7 @@
 											<button type="button" class="btn btn-primary" data-toggle="dropdown">Detail</button>
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_tahun ?>)"><i class="fas fa-edit"></i> Edit</a></li>
-												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_tahun ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
+												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_tahun ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
 											</ul>
 										</div>
 									</td>

@@ -61,7 +61,7 @@
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="<?= base_url('siswa/show/' . $row->id_siswa) ?>"><i class="fas fa-eye"></i> Detail</a></li>
 												<li><a class="dropdown-item" href="<?= base_url('siswa/edit/' . $row->id_siswa) ?>"><i class="fas fa-edit"></i> Edit</a></li>
-												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_siswa ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
+												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_siswa ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
 											</ul>
 										</div>
 									</td>

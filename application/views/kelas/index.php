@@ -48,7 +48,7 @@
 											<ul class="dropdown-menu">
 												<li><a class="dropdown-item" href="javascript:void(0)" onclick="updateData(<?= $row->id_kelas ?>)"><i class="fas fa-edit"></i> Edit</a></li>
 												<li><a class="dropdown-item" href="<?= base_url('kelas/edit/' . $row->id_kelas) ?>"><i class="fas fa-users"></i> Peserta Kelas</a></li>
-												<!-- <li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_kelas ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li> -->
+												<li><a class="dropdown-item" href="javascript:void(0)" onclick="deleteData(<?= $row->id_kelas ?>)" data-toggle="modal" data-target="#delete-modal"><i class="fas fa-trash"></i> Delete</a></li>
 											</ul>
 										</div>
 									</td>

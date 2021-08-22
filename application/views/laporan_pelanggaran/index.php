@@ -9,6 +9,9 @@
 	<div class="card">
 		<div class="card-header iseng-sticky bg-white">
 			<h4>Laporan Pelanggaran</h4>
+			<div class="card-header-action">
+				<a href="<?= base_url('pelanggaran/export') ?>" data-target="#crud-modal" class="btn btn-primary">Export</a>
+			</div>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">

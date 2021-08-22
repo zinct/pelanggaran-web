@@ -35,7 +35,6 @@ class Pelanggaran_data extends CI_Controller {
       'id_pelanggaran' => $this->input->post('id_pelanggaran'),
       'id_siswa' => $this->input->post('id_siswa'),
       'id_ptk' => $this->session->userdata('id_ref'),
-      'id_ptk' => $this->session->userdata('id_ref'),
       'tgl' => date('Y-m-d H:i:s'),
       'poin' => $this->input->post('poin'),
       'catatan' => $this->input->post('catatan'),
