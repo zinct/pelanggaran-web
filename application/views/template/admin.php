@@ -41,34 +41,34 @@
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
-        <?php if(in_array($this->session->userdata('level'), ['admin', 'kesiswaan'])) : ?>
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">Notifikasi
+          <?php if(in_array($this->session->userdata('level'), ['admin', 'kesiswaan'])) : ?>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+              <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                <div class="dropdown-header">Notifikasi
+                </div>
+                <div class="dropdown-list-content dropdown-list-icons">
+                  <?php 
+                    $notifikasi = $this->Pelanggaran_data_model->get_Pelanggaran($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun, 5, true);
+                  ?>
+                  <?php foreach($notifikasi as $row) : ?>
+                    <a href="<?= base_url("verifikasi_pelanggaran/create?nis={$row->nis}") ?>" class="dropdown-item dropdown-item-unread">
+                      <div class="dropdown-item-icon bg-primary text-white">
+                        <i class="fas fa-user"></i>
+                      </div>
+                      <div class="dropdown-item-desc">
+                        <b><?= $row->nama_siswa ?> | <?= $row->nama_kelas ?></b>
+                        <p class="text-muted"><?= $row->nama_pelanggaran ?></p>
+                        <div class="time"><?= date('Y-m-d', strtotime($row->tgl))  ?></div>
+                      </div>
+                    </a>
+                  <?php endforeach; ?>
+                </div>
+                <div class="dropdown-footer text-center">
+                  <a href="javascript:void(0)">Selengkapnya <i class="fas fa-chevron-right"></i></a>
+                </div>
               </div>
-              <div class="dropdown-list-content dropdown-list-icons">
-                <?php 
-                  $notifikasi = $this->Pelanggaran_data_model->get_Pelanggaran($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun, 5, true);
-                ?>
-                <?php foreach($notifikasi as $row) : ?>
-                  <a href="<?= base_url("verifikasi_pelanggaran/create?nis={$row->nis}") ?>" class="dropdown-item dropdown-item-unread">
-                    <div class="dropdown-item-icon bg-primary text-white">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <div class="dropdown-item-desc">
-                      <b><?= $row->nama_siswa ?> | <?= $row->nama_kelas ?></b>
-                      <p class="text-muted"><?= $row->nama_pelanggaran ?></p>
-                      <div class="time"><?= date('Y-m-d', strtotime($row->tgl))  ?></div>
-                    </div>
-                  </a>
-                <?php endforeach; ?>
-              </div>
-              <div class="dropdown-footer text-center">
-                <a href="javascript:void(0)">Selengkapnya <i class="fas fa-chevron-right"></i></a>
-              </div>
-            </div>
-        </li>
-        <?php endif; ?>
+          </li>
+          <?php endif; ?>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
               <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
               <div class="d-sm-none d-lg-inline-block"><?= $this->session->userdata('nama_user') ?> (<?= $this->session->userdata('level') ?>)</div>
@@ -84,13 +84,14 @@
       <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <img class="img-fluid mr-5 mt-3" src="<?= base_url('assets/img/smk.png') ?>" style="max-width: 150px;">
+            <img class="img-fluid mr-5 mt-3" src="<?= base_url('assets/img/smk 1.png') ?>" style="max-width: 150px;">
             <a class="" href="<?= base_url('home') ?>">Pelanggaran Siswa</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="index.html">PS</a>
           </div>
           <ul class="sidebar-menu pb-5 mt-3">
+            <?php if($this->session->userdata('level') != 'siswa') : ?>
             <li>
               <a class="nav-link <?= $this->uri->segment(1) == 'dashboard' ? 'text-primary' : '' ?>" href="<?= base_url('dashboard') ?>"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
             </li>
@@ -150,7 +151,17 @@
               </ul>
             </li>
             <?php endif; ?>
-
+            
+            <?php else: ?>
+                <li>
+                  <a class="nav-link <?= $this->uri->segment(1) == 'pelanggaran_siswa' ? 'text-primary' : '' ?>" href="<?= base_url('pelanggaran_siswa') ?>"><i class="fas fa-user"></i> <span>Pelanggaran</span></a>
+                </li>
+            <?php endif; ?>
+            <?php if($this->session->userdata('level') == 'walikelas') : ?>
+              <li>
+                <a class="nav-link <?= $this->uri->segment(1) == 'pelanggaran_kelas' ? 'text-primary' : '' ?>" href="<?= base_url('pelanggaran_kelas') ?>"><i class="fas fa-user"></i> <span>Pelanggaran Kelas</span></a>
+              </li>
+              <?php endif; ?>
           </ul>
         </aside>
       </div>

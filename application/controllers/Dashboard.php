@@ -7,6 +7,9 @@ class Dashboard extends CI_Controller {
 		parent::__construct();
 		if(!$this->session->userdata('login'))
 			redirect('login');
+		
+		if($this->session->userdata('level') == 'siswa')
+			redirect('pelanggaran_siswa');
     }
 
 	public function index(){
@@ -21,6 +24,7 @@ class Dashboard extends CI_Controller {
 		$data['kelas12'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas12($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
 		$data['kelas11'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas11($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
 		$data['kelas10'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas10($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+
 		$this->template->load('template/admin', 'dashboard', $data);
 	}
 }

@@ -9,6 +9,9 @@
 	<div class="card">
 		<div class="card-header iseng-sticky bg-white">
 			<h4>Laporan Pelanggaran Siswa</h4>
+			<div class="card-header-action">
+				<a href="<?= base_url('laporan_pelanggaran_siswa/laporan') ?>" target="_blank" class="btn btn-danger">Cetak</a>
+			</div>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">

@@ -8,6 +8,8 @@ class Kategori_sanksi extends CI_Controller {
     if(!$this->session->userdata('login'))
 				redirect('login');
 
+        if($this->session->userdata('level') == 'siswa')
+			redirect('pelanggaran_siswa');
         if($this->session->userdata('level') == 'walikelas')
         redirect('login');      
   }

@@ -7,6 +7,9 @@ class Verifikasi_pelanggaran extends CI_Controller {
 
     if(!$this->session->userdata('login'))
       redirect('login');
+
+      if($this->session->userdata('level') == 'siswa')
+			redirect('pelanggaran_siswa');
       
     if(!in_array($this->session->userdata('level'), ['admin', 'kesiswaan']))
       redirect('dashboard');

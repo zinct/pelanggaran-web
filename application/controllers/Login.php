@@ -163,31 +163,41 @@ class Login extends CI_Controller
 					'level' => $user->level
 				);
 
+				if($user->level == 'walikelas') {
+					if($kelas = $this->db->get_where('wali_kelas', ['id_wali_kelas' =>$user->id_user])->row()) {
+						$session['id_kelas'] = $kelas->id_kelas; 
+					} else {
+						$this->session->set_flashdata('error', 'Walikelas belum memiliki kelas!');
+						redirect('login');
+					}
+				}
+
 				$this->session->set_userdata($session);
 				redirect('dashboard');
 			}
 		}
 
 		// Pengecekan Siswa
-		// $user = $this->db->get_where('siswa', ['nisn' => $username]);
+		$user = $this->db->get_where('siswa', ['nis' => $username]);
 
-		// if($user->num_rows() > 0) {
+		if($user->num_rows() > 0) {
 
-		//   $user = $user->row();
+		  $user = $user->row();
 
-		//   if($user->nis == $password) {
-		//     $session = array(
-		//       'login'  => TRUE,
-		//       'nis' => $user->nis,            
-		//       'nama_user' => $user->nama_siswa,            
-		//       'level' => 'Siswa',
-		//     );
+		  if($user->nis == $password) {
+		    $session = array(
+		      'login'  => TRUE,
+		      'nis' => $user->nis,            
+		      'nama_user' => $user->nama_siswa,            
+		      'id_siswa' => $user->id_siswa,            
+		      'level' => 'siswa',
+		    );
 
-		//     $this->session->set_userdata($session);
-		//     redirect("pembayaran/detail");
-		//   }
+		    $this->session->set_userdata($session);
+		    redirect("dashboard");
+		  }
 
-		// }
+		}
 
 		$this->session->set_flashdata('error', 'Username Atau Password Salah!');
 		redirect('login');

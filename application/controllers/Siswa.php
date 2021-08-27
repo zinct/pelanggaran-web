@@ -10,6 +10,9 @@ class Siswa extends CI_Controller
     if (!$this->session->userdata('login'))
       redirect('login');
 
+      if($this->session->userdata('level') == 'siswa')
+			redirect('pelanggaran_siswa');
+
     $this->load->model('Siswa_model');
   }
 
