@@ -10,12 +10,6 @@ class Pelanggaran_data extends CI_Controller {
 				redirect('login');
         if($this->session->userdata('level') == 'siswa')
 			redirect('pelanggaran_siswa');
-
-        if($this->session->userdata('level') == 'walikelas')
-        redirect('login');      
-
-        if($this->session->userdata('level') == 'bk')
-        redirect('login');      
   }
 
   public function index(){

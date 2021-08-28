@@ -75,6 +75,23 @@ class Laporan_pelanggaran extends CI_Controller {
 			</tr>';
 		}
 		$html .= '</table>';
+		$html .= '<br>';
+		$html .= '<table width="90%">
+		<br><br><br><br><br><br><br><br><br><br><br>
+			<tr>
+				<td height=""></td>
+				<td class="h_tengah">Bandung, '.date('Y-m-d').'</td>
+			</tr>
+			<br>
+			<tr>
+				<td height="50px" class="h_tengah"></td>
+				<td class="h_tengah">Mengetahui</td>
+			</tr>
+			<tr>
+				<td class="h_tengah"></td>
+				<td class="h_tengah">________________</td>
+			</tr>
+		</table>';
 		$pdf->nsi_html($html);
 		$pdf->Output('lap_anggota'.date('Ymd_His') . '.pdf', 'I');
 	} 

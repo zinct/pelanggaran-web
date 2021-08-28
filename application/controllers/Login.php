@@ -163,8 +163,9 @@ class Login extends CI_Controller
 					'level' => $user->level
 				);
 
+
 				if($user->level == 'walikelas') {
-					if($kelas = $this->db->get_where('wali_kelas', ['id_wali_kelas' =>$user->id_user])->row()) {
+					if($kelas = $this->db->get_where('wali_kelas', ['id_ptk' =>$user->id_ref])->row()) {
 						$session['id_kelas'] = $kelas->id_kelas; 
 					} else {
 						$this->session->set_flashdata('error', 'Walikelas belum memiliki kelas!');
@@ -184,7 +185,7 @@ class Login extends CI_Controller
 
 		  $user = $user->row();
 
-		  if($user->nis == $password) {
+		  if(password_verify($password, $user->password)) {
 		    $session = array(
 		      'login'  => TRUE,
 		      'nis' => $user->nis,            

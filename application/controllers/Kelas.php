@@ -82,6 +82,28 @@ class Kelas extends CI_Controller {
       echo "<script>console.log('Tambahkan')</script>";
     }
 
+    if($this->input->post('nama_kelas')) {
+      $this->db->where('id_kelas', $id_kelas);
+      $this->db->update('kelas', [
+        'nama_kelas' => $this->input->post('nama_kelas'),
+        'id_jurusan' => $this->input->post('id_jurusan'),
+        'tingkat' => $this->input->post('tingkat'),
+        'id_tahun' => $this->input->post('id_tahun'),
+      
+      ]);
+      if($this->input->post('id_ptk')) {
+        $this->db->delete('wali_kelas', ['id_kelas' => $id_kelas]);
+        $this->db->insert('wali_kelas', ['id_ptk' => $this->input->post('id_ptk'), 'id_kelas' => $id_kelas]);
+        $this->session->set_flashdata('success', 'Berhasil mengubah data.');
+        redirect('/kelas');
+      }
+      $this->session->set_flashdata('success', 'Berhasil mengubah data.');      
+      redirect('/kelas');
+
+    }
+
+    
+
     $this->session->set_flashdata('success', 'Berhasil mengubah data.');
     redirect('/kelas/edit/'.$id_kelas);
   }

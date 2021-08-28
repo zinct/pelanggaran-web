@@ -104,7 +104,6 @@
                       <tr>
                         <td class="text-center"><?= $i++ ?></td>
                         <td>
-                          <?php if($row->status == 'Jatuh Sanksi') : ?>
                           <div class="btn-group">
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="dropdown">Verifikasi</button>
                             <ul class="dropdown-menu">
@@ -118,9 +117,6 @@
                               </form>
                             </ul>
                           </div>
-                          <?php else: ?>
-                            <i class="fas fa-<?= $row->status == 'Disetujui' ? 'check' : 'times'  ?>"></i>
-                          <?php endif; ?>
                         </td>
                         <td nowrap>
                           <strong><?= $row->nama_kategori_pelanggaran." - ".$row->nama_jenis_pelanggaran ?></strong> <br> 
