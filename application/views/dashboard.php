@@ -72,6 +72,41 @@
       </div>
       <div class="card-body">
         <canvas id="myChart" height="140"></canvas>
+        <div class="statistic-details mt-sm-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <h5>Kelas 12</h5>
+          </div>
+          <?php $i=0; foreach($pelanggaran as $row) : ?>
+            <div class="statistic-details-item">
+              <div class="detail-value"><?= @$this->Pelanggaran_data_model->get_pelanggaran_kelas12($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun)[$i++]->total ?? 0 ?></div>
+              <div class="detail-name"><?= $row->pelanggaran ?></div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+        <hr>
+        <div class="statistic-details mt-sm-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <h5>Kelas 11</h5>
+          </div>
+          <?php $i=0; foreach($pelanggaran as $row) : ?>
+            <div class="statistic-details-item">
+              <div class="detail-value"><?= @$this->Pelanggaran_data_model->get_pelanggaran_kelas11($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun)[$i++]->total ?? 0 ?></div>
+              <div class="detail-name"><?= $row->pelanggaran ?></div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+        <hr>
+        <div class="statistic-details mt-sm-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <h5>Kelas 10</h5>
+          </div>
+          <?php $i=0; foreach($pelanggaran as $row) : ?>
+            <div class="statistic-details-item">
+              <div class="detail-value"><?= @$this->Pelanggaran_data_model->get_pelanggaran_kelas10($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun)[$i++]->total ?? 0 ?></div>
+              <div class="detail-name"><?= $row->pelanggaran ?></div>
+            </div>
+          <?php endforeach; ?>
+        </div>
       </div>
     </div>
   </div>
@@ -160,6 +195,8 @@
             yAxes: [{
                 ticks: {
                     min: 0,
+                stepSize: 1,
+
                 }
             }],
             

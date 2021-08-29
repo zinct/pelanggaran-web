@@ -8,9 +8,11 @@
 	</div>
 	<div class="card">
 		<div class="card-header iseng-sticky bg-white">
-			<h4>Pelanggaran</h4>
+			<h4>Total Pelanggaran : <?= count($pelanggaran_data) ?></h4>
 			<div class="card-header-action">
-
+				<?php if($this->session->userdata('level') == 'walikelas') : ?>
+					<a href="<?= base_url('pelanggaran_kelas/laporan') ?>" target="_blank" class="btn btn-danger">Cetak</a>
+				<?php endif; ?>
 			</div>
 		</div>
 		<div class="card-body">

@@ -14,7 +14,13 @@ class Pelanggaran_data extends CI_Controller {
 
   public function index(){
     $data['halaman'] = "Entri Pelanggaran";
-    $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_pelanggaran($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+
+    if($this->session->userdata('level') == 'walikelas') {
+      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_pelanggaran_kelas($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun, $this->session->userdata('id_kelas'));
+    } else {
+      $data['pelanggaran_data'] = $this->Pelanggaran_data_model->get_pelanggaran($this->Pelanggaran_data_model->get_TahunAktif()->id_tahun);
+    }
+
     $data['jenis_pelanggaran'] = $this->db->get('jenis_pelanggaran')->result();
     $data['kategori_pelanggaran'] = $this->db->get('kategori_pelanggaran')->result();
     $this->template->load('template/admin', 'pelanggaran_data/index', $data);

@@ -59,48 +59,52 @@ class Pelanggaran_data_model extends CI_Model{
 
     function get_Pelanggaran_statistik($id_tahun){
         return $this->db->query("
-            SELECT nama_jenis_pelanggaran AS pelanggaran
+            SELECT kategori_pelanggaran.nama_kategori_pelanggaran AS pelanggaran
             FROM pelanggaran_data 
             JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
             JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kategori_pelanggaran ON jenis_pelanggaran.id_kategori_pelanggaran = kategori_pelanggaran.id_kategori_pelanggaran
             WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui'
-            GROUP BY nama_jenis_pelanggaran
+            GROUP BY kategori_pelanggaran.nama_kategori_pelanggaran
         ")->result();
     }
 
     function get_pelanggaran_kelas12($id_tahun){
         return $this->db->query("
-            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, kategori_pelanggaran.nama_kategori_pelanggaran AS pelanggaran
             FROM pelanggaran_data
             JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
             JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kategori_pelanggaran ON jenis_pelanggaran.id_kategori_pelanggaran = kategori_pelanggaran.id_kategori_pelanggaran
             JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
             WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '12'
-            GROUP BY pelanggaran.id_jenis_pelanggaran
+            GROUP BY kategori_pelanggaran.nama_kategori_pelanggaran
         ")->result();
     }
 
     function get_pelanggaran_kelas11($id_tahun){
         return $this->db->query("
-            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, kategori_pelanggaran.nama_kategori_pelanggaran AS pelanggaran
             FROM pelanggaran_data
             JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
             JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kategori_pelanggaran ON jenis_pelanggaran.id_kategori_pelanggaran = kategori_pelanggaran.id_kategori_pelanggaran
             JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
             WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '11'
-            GROUP BY pelanggaran.id_jenis_pelanggaran
+            GROUP BY kategori_pelanggaran.nama_kategori_pelanggaran
         ")->result();
     }
 
     function get_pelanggaran_kelas10($id_tahun){
         return $this->db->query("
-            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, nama_jenis_pelanggaran AS pelanggaran
+            SELECT COUNT(pelanggaran_data.id_pelanggaran_data) AS total, kategori_pelanggaran.nama_kategori_pelanggaran AS pelanggaran
             FROM pelanggaran_data
             JOIN pelanggaran ON pelanggaran_data.id_pelanggaran = pelanggaran.id_pelanggaran
             JOIN jenis_pelanggaran ON pelanggaran.id_jenis_pelanggaran = jenis_pelanggaran.id_jenis_pelanggaran
+            JOIN kategori_pelanggaran ON jenis_pelanggaran.id_kategori_pelanggaran = kategori_pelanggaran.id_kategori_pelanggaran
             JOIN kelas ON pelanggaran_data.id_kelas = kelas.id_kelas
             WHERE pelanggaran_data.id_tahun = $id_tahun AND pelanggaran_data.status = 'Disetujui' AND tingkat = '10'
-            GROUP BY pelanggaran.id_jenis_pelanggaran
+            GROUP BY kategori_pelanggaran.nama_kategori_pelanggaran
         ")->result();
     }
 
@@ -200,7 +204,7 @@ class Pelanggaran_data_model extends CI_Model{
         return $this->db->get('pelanggaran_data')->result();
     }
 
-    function get_Pelanggaran_kelas($id_tahun, $id_kelas){
+    function get_Pelanggaran_kelas($id_tahun, $id_kelas, $limit = false){
         $this->db->select(
             '   pelanggaran_data.id_pelanggaran_data, 
                 pelanggaran_data.id_pelanggaran, 
@@ -212,6 +216,7 @@ class Pelanggaran_data_model extends CI_Model{
                 pelanggaran_data.id_siswa, 
                 siswa.nama_siswa, 
                 siswa.nis, 
+                siswa.image, 
                 kelas.nama_kelas, 
                 pelanggaran_data.id_ptk, 
                 ptk.nama_ptk, 
@@ -240,6 +245,10 @@ class Pelanggaran_data_model extends CI_Model{
         $this->db->where('tahun.id_tahun', $id_tahun);
         $this->db->where('pelanggaran_data.id_kelas', $id_kelas);
         $this->db->order_by('pelanggaran_data.tgl', 'desc');
+
+        if($limit)
+            $this->db->limit($limit);
+
         return $this->db->get('pelanggaran_data')->result();
     }
 
